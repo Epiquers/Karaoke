@@ -1,0 +1,61 @@
+/* ---------- ESTILOS GENERALES ---------- */
+
+body {
+  background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* ---------- TARJETAS ---------- */
+
+.card-dark {
+  background-color: #1e1e1e;
+  border: none;
+  border-radius: 10px;
+}
+
+.card-dark h2 {
+  color: #ffffff;
+}
+
+/* ---------- FORMULARIOS ---------- */
+
+.form-label {
+  color: #ffffff;
+}
+
+.form-control {
+  background-color: #2a2a2a;
+  border: none;
+  color: #ffffff;
+}
+
+.form-control:focus {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  box-shadow: none;
+  border: 1px solid #dc3545;
+}
+
+/* ---------- BOTONES ---------- */
+
+.btn-main {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-main:hover {
+  background-color: #bb2d3b;
+}
+
+/* ---------- LINKS ---------- */
+
+a {
+  color: #dc3545;
+}
+
+a:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
