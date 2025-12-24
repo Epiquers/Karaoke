@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="canciones.php">
@@ -9,10 +13,7 @@
         </button>
         
         <div class="collapse navbar-collapse" id="navbarUsuario">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <span class="nav-link text-white">Hola, <!--<?= htmlspecialchars($_SESSION["usuario"]) ?>--></span>
-                </li>
+            <ul class="navbar-nav">  
                 <li class="nav-item">
                     <a class="nav-link active" href="canciones.php">Canciones</a>
                 </li>
@@ -21,6 +22,11 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="karaoke.php">Karaoke</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">  
+                <li class="nav-item">
+                    <span class="nav-link text-white">Hola, <?= htmlspecialchars($_SESSION["nombre"]) ?></span>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../logout.php">Salir</a>
