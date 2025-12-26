@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'includes/conexion.php';
 
 $error = "";
 $ok    = "";
@@ -15,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } elseif ($password !== $password2) {
         $error = "Las contraseñas no coinciden";
     } else {
-        // Más adelante: insertar en BD
+        $consulta_registro = "INSERT INTO usuarios (nombre, email, passwd) VALUES ('$nombre', '$email', '$password')";
+        mysqli_query($conn, $consulta_registro);
         $ok = "Usuario registrado correctamente";
     }
 }
