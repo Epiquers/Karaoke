@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     header("Location: usuario/canciones.php");
                     exit;
                 case 2:
-                    header('Location: administrador/lista.php');
+                    header('Location: administrador/canciones_admin.php');
                     exit();
                 default:
                     // Si hay un rol raro, lo mandamos al login

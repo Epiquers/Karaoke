@@ -60,7 +60,7 @@ $result_cola = mysqli_query($conn, $consulta_cola);
                     echo "<h1 class='display-5 fw-bold text-center mb-4 text-warning'>" . $cancion_actual['titulo'] . " - " . $cancion_actual['artista'] . "</h1>
                             <div class='position-relative mb-4'>
                                 <video id='videoKaraoke' class='w-100 rounded shadow' controls preload='metadata'>
-                                    <source src='" . $cancion_actual['archivo_mp4'] . "' type='video/mp4'>
+                                    <source src='" . $cancion_actual['archivo'] . "' type='video/mp4'>
                                     Tu navegador no soporta vídeo.
                                 </video>
                             </div>
