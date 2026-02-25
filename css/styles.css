@@ -95,3 +95,52 @@ a:hover {
 }
 
 
+        .card-dark {
+            background-color: #151515;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+
+        .sidebar-scroll {
+            height: calc(100vh - 180px);
+            overflow-y: auto;
+        }
+
+        @media (min-width: 992px) {
+            .player-height {
+                height: calc(100vh - 70px);
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .nav-pills .nav-link {
+            color: #fff;
+            border-radius: 0;
+            padding: 12px;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: #dc3545 !important;
+        }
+
+        /* Estilo para el buscador */
+        .search-container {
+            background: #151515;
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+
+        .form-control-dark {
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+        }
+
+        .form-control-dark:focus {
+            background: #222;
+            color: white;
+            border-color: #dc3545;
+            box-shadow: none;
+        }
+
