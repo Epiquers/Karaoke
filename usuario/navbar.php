@@ -1,7 +1,6 @@
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="canciones.php">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold text-warning" href="canciones.php">
             🎤 Kantabile
         </a>
         
@@ -10,23 +9,23 @@
         </button>
         
         <div class="collapse navbar-collapse" id="navbarUsuario">
-            <ul class="navbar-nav">  
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="canciones.php">Canciones</a>
+                    <span class="nav-link text-secondary me-2">
+                        <i class="bi bi-person-circle me-1"></i> <?= htmlspecialchars($_SESSION["nombre"]) ?>
+                    </span>
                 </li>
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="cola.php">Cola</a>
+                    <a class="nav-link btn btn-outline-light btn-sm px-3 me-2" href="perfil.php">
+                        <i class="bi bi-gear-fill me-1"></i> Perfil
+                    </a>
                 </li>
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="karaoke.php">Karaoke</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">  
-                <li class="nav-item">
-                    <span class="nav-link text-white">Hola, <?= htmlspecialchars($_SESSION["nombre"]) ?></span>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../logout.php">Salir</a>
+                    <a class="btn btn-main btn-sm text-white px-3" href="../logout.php">
+                        <i class="bi bi-box-arrow-right me-1"></i> Salir
+                    </a>
                 </li>
             </ul>
         </div>
