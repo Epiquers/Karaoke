@@ -26,42 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['siguiente'])) {
     exit();
 }
 
-// ACCIÓN: LIMPIAR TODA LA COLA
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['limpiar_cola'])) {
-    // Usamos el idUsuario que ya tienes definido en tu sesión
-    $consulta_limpiar = "DELETE FROM cola WHERE id_usuario = '$idUsuario'";
-
-    if (mysqli_query($conn, $consulta_limpiar)) {
-        // Redirigimos para que se refresque la lista visualmente
-        header('Location: canciones.php');
-        exit();
-    }
-}
-
-// ACCIÓN: MOVER CANCIÓN (SUBIR O BAJAR)
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mover'])) {
-    $idActual = $_POST['idCola'];
-
-    // Recogemos el valor del botón "mover"
-    $direccion = $_POST['mover'];
-
-    $operador = ($direccion == 'subir') ? '<' : '>';
-    $orden = ($direccion == 'subir') ? 'DESC' : 'ASC';
-
-    $sql_vecino = "SELECT id FROM cola WHERE id_usuario = '$idUsuario' AND id $operador '$idActual' ORDER BY id $orden LIMIT 1";
-    $res_vecino = mysqli_query($conn, $sql_vecino);
-
-    if ($vecino = mysqli_fetch_assoc($res_vecino)) {
-        $idVecino = $vecino['id'];
-
-        mysqli_query($conn, "UPDATE cola SET id = 0 WHERE id = '$idActual'");
-        mysqli_query($conn, "UPDATE cola SET id = '$idActual' WHERE id = '$idVecino'");
-        mysqli_query($conn, "UPDATE cola SET id = '$idVecino' WHERE id = 0");
-    }
-    header('Location: canciones.php');
-    exit();
-}
-
 // 3️⃣ CONSULTAS
 $result_cola = mysqli_query($conn, "SELECT * FROM cola WHERE id_usuario = '$idUsuario' ORDER BY id ASC");
 $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
@@ -171,7 +135,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             </div>
                         </div>
                         <div class="sidebar-scroll p-3" id="listaCanciones">
-                            <?php while ($row = mysqli_fetch_assoc($resultado_canciones)): ?>
+                            <?php while ($row = mysqli_fetch_assoc($resultado_canciones)) { ?>
                                 <div class="item-cancion d-flex justify-content-between align-items-center p-3 card-dark mb-2"
                                     data-titulo="<?= strtolower($row['titulo']) ?>"
                                     data-artista="<?= strtolower($row['artista']) ?>">
@@ -184,26 +148,27 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                         <button type="submit" class="btn btn-main btn-sm">Añadir</button>
                                     </form>
                                 </div>
-                            <?php endwhile; ?>
+                            <?php } ?>
                         </div>
                     </div>
 
                     <div class="tab-pane fade" id="tab-cola">
                         <div class="d-flex justify-content-between align-items-center p-3 border-bottom border-secondary bg-dark">
                             <h6 class="text-secondary small mb-0">SIGUIENTES TEMAS</h6>
-                            <?php if (mysqli_num_rows($result_cola) > 0): ?>
-                                <form action="" method="POST" onsubmit="return confirm('¿Vaciar toda la lista?');">
+                            <?php if (mysqli_num_rows($result_cola) > 0) { ?>
+                                <form action="vaciar_cola.php" method="POST" onsubmit="return confirm('¿Vaciar toda la lista?');">
                                     <button type="submit" name="limpiar_cola" class="btn btn-outline-danger btn-sm border-0 py-0" style="font-size: 0.7rem;">
+                                        <input type="hidden" name="idUsuario" value="<?= $idUsuario ?> ">
                                         <i class="bi bi-trash3-fill me-1"></i>VACIAR
                                     </button>
                                 </form>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
 
                         <div class="sidebar-scroll p-3">
-                            <?php if (mysqli_num_rows($result_cola) > 0):
+                            <?php if (mysqli_num_rows($result_cola) > 0) {
                                 mysqli_data_seek($result_cola, 0);
-                                while ($row = mysqli_fetch_assoc($result_cola)):
+                                while ($row = mysqli_fetch_assoc($result_cola)) {
                                     $idC = $row['id_cancion'];
                                     $res_c = mysqli_query($conn, "SELECT * FROM canciones WHERE id = '$idC'");
                                     $c = mysqli_fetch_assoc($res_c);
@@ -216,21 +181,21 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
 
-                                   
-                                       
-                                                <form action="" method="POST" class="d-flex gap-1">
-                                                    <input type="hidden" name="idCola" value="<?= $row['id'] ?>">
 
-                                                    <button type="submit" name="mover" value="subir" class="btn btn-link text-secondary p-0">
-                                                        <i class="bi bi-caret-up-fill me-5"></i>
-                                                    </button>
+                                            <!-- BOTONES DE MOVER EN LA COLA -->
+                                            <form action="cancion_mover.php" method="POST" class="d-flex gap-1">
+                                                <input type="hidden" name="idCola" value="<?= $row['id'] ?>">
 
-                                                    <button type="submit" name="mover" value="bajar" class="btn btn-link text-secondary p-0">
-                                                        <i class="bi bi-caret-down-fill me-5"></i>
-                                                    </button>
-                                                </form>
-                                     
+                                                <button type="submit" name="mover" value="subir" class="btn btn-link text-secondary p-0">
+                                                    <i class="bi bi-caret-up-fill me-5"></i>
+                                                </button>
 
+                                                <button type="submit" name="mover" value="bajar" class="btn btn-link text-secondary p-0">
+                                                    <i class="bi bi-caret-down-fill me-5"></i>
+                                                </button>
+                                            </form>
+
+                                            <!-- BOTONES DE QUITAR DE LA COLA -->
                                             <form action="cancion_quitar.php" method="POST">
                                                 <input type="hidden" name="idCola" value="<?= $row['id'] ?>">
                                                 <button type="submit" class="btn btn-link text-danger p-0">
@@ -239,17 +204,17 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                             </form>
                                         </div>
                                     </div>
-                                <?php endwhile;
-                            else: ?>
+                                <?php }
+                            } else { ?>
                                 <p class="text-center text-muted py-5">Cola vacía</p>
-                            <?php endif; ?>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="col-12 col-lg-8 col-xl-9 player-height bg-black py-4">
-                <?php if ($cancion_actual): ?>
+                <?php if ($cancion_actual) { ?>
                     <div class="container-fluid text-center">
                         <h2 class="h4 fw-bold text-warning mb-1"><?= $cancion_actual['titulo'] ?></h2>
                         <p class="text-secondary mb-4"><?= $cancion_actual['artista'] ?></p>
@@ -265,12 +230,12 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             <button id="btnFullscreen" class="btn btn-outline-light"><i class="bi bi-fullscreen"></i></button>
                         </div>
                     </div>
-                <?php else: ?>
+                <?php } else { ?>
                     <div class="d-flex flex-column justify-content-center align-items-center text-center w-100 h-100 py-5">
                         <i class="bi bi-mic-fill display-1 text-secondary opacity-25"></i>
                         <h3 class="text-muted mt-4">No hay canciones en cola</h3>
                     </div>
-                <?php endif; ?>
+                <?php } ?>
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             <script>

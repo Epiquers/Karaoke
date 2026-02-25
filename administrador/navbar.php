@@ -1,27 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="seguridad.php">
-            🔐 Panel Admin
-        </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold text-warning" href="canciones_admin.php">
+            🎤 Kantabile
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUsuario">
             <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse" id="navbarAdmin">
-            <ul class="navbar-nav me-auto">
+        
+        <div class="collapse navbar-collapse" id="navbarUsuario">
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <span class="nav-link text-warning">ADMIN: <?= htmlspecialchars($_SESSION["nombre"]) ?></span>
+                    <span class="nav-link text-secondary me-2">
+                        <i class="bi bi-person-circle me-1"></i> <?= htmlspecialchars($_SESSION["nombre"]) ?>
+                    </span>
                 </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="canciones_admin.php">Canciones</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="usuarios_admin.php">Usuarios</a>
-                </li>
-                <li class="nav-item">
+                  <li class="nav-item">
                     <?php 
                     // Detectamos si el nombre del archivo actual es el del reproductor
                     $pagina_actual = basename($_SERVER['PHP_SELF']);
@@ -32,8 +27,17 @@
                         <a class="nav-link fw-bold text-warning" href="reproductor_admin.php">Vista Reproductor</a>
                     <?php } ?>
                 </li>
+                
                 <li class="nav-item">
-                    <a class="nav-link" href="../logout.php">Salir</a>
+                    <a class="nav-link btn btn-outline-light btn-sm px-3 me-2" href="usuarios_admin.php">
+                        <i class="bi bi-gear-fill me-1"></i> Usuarios
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="btn btn-main btn-sm text-white px-3" href="../logout.php">
+                        <i class="bi bi-box-arrow-right me-1"></i> Salir
+                    </a>
                 </li>
             </ul>
         </div>
