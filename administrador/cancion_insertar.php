@@ -27,6 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo'])) {
 }
 
 // Volver a la página del admin
-header('Location: admin_canciones.php');
+header('Location: canciones_admin.php');
 exit();
 ?>

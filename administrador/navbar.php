@@ -22,7 +22,15 @@
                     <a class="nav-link" href="usuarios_admin.php">Usuarios</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../usuario/canciones.php">Modo Usuario</a>
+                    <?php 
+                    // Detectamos si el nombre del archivo actual es el del reproductor
+                    $pagina_actual = basename($_SERVER['PHP_SELF']);
+                    if ($pagina_actual == 'reproductor_admin.php'){ 
+                    ?>
+                        <a class="nav-link fw-bold text-info" href="canciones_admin.php">Volver a Gestión</a>
+                    <?php }else{ ?>
+                        <a class="nav-link fw-bold text-warning" href="reproductor_admin.php">Vista Reproductor</a>
+                    <?php } ?>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="../logout.php">Salir</a>
