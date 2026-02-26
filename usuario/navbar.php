@@ -1,7 +1,6 @@
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="canciones.php">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold text-warning" href="canciones.php">
             🎤 Kantabile
         </a>
         
@@ -10,10 +9,13 @@
         </button>
         
         <div class="collapse navbar-collapse" id="navbarUsuario">
-            <ul class="navbar-nav">  
+            <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item">
-                    <a class="nav-link active" href="canciones.php">Canciones</a>
+                    <span class="nav-link text-secondary me-2">
+                        <i class="bi bi-person-circle me-1"></i> <?= htmlspecialchars($_SESSION["nombre"]) ?>
+                    </span>
                 </li>
+                
                 <li class="nav-item">
                     <a class="nav-link" href="karaoke.php">Karaoke</a>
                 </li>
