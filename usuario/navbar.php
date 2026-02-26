@@ -15,13 +15,13 @@
                     <a class="nav-link active" href="canciones.php">Canciones</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="cola.php">Cola</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="karaoke.php">Karaoke</a>
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto">  
+                <li class="nav-item">
+                    <a class="nav-link" href="../administrador/canciones_admin.php">Administrar</a>
+                </li>
                 <li class="nav-item">
                     <span class="nav-link text-white">Hola, <?= htmlspecialchars($_SESSION["nombre"]) ?></span>
                 </li>

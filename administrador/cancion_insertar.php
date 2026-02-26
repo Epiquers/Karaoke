@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo'])) {
 
     // Datos del archivo
     $nombre_original = $_FILES['archivo']['name'];
-    $ruta_temporal = $_FILES['archivo']['ruta_temporal'];
+    $ruta_temporal = $_FILES['archivo']['tmp_name'];
 
     // Ruta final en el servidor
     $ruta_final = '../videos/' . $nombre_original;
@@ -22,11 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo'])) {
 
         mysqli_query($conn, $sql);
     }
-
     mysqli_close($conn);
 }
 
 // Volver a la página del admin
-header('Location: admin_canciones.php');
+header('Location: canciones_admin.php');
 exit();
-?>
