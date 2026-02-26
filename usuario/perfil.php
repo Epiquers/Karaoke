@@ -50,7 +50,7 @@ $usuario = mysqli_fetch_assoc($res);
 </head>
 <body class="text-light">
 
-    <?php include 'navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -101,9 +101,6 @@ $usuario = mysqli_fetch_assoc($res);
                                 <button type="submit" class="btn btn-main text-white py-2 fw-bold">
                                     GUARDAR CAMBIOS
                                 </button>
-                                <a href="canciones.php" class="btn btn-link text-secondary text-decoration-none small mt-2">
-                                    Volver al reproductor
-                                </a>
                             </div>
 
                         </form>

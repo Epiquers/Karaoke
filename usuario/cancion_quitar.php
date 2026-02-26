@@ -16,5 +16,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCola'])) {
 }
 
 // Devolvemos al usuario a canciones
-header('Location: canciones.php');
+header("Location: canciones.php?cola=1");
 exit();

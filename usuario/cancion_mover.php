@@ -23,6 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mover'])) {
         mysqli_query($conn, "UPDATE cola SET id = '$idActual' WHERE id = '$idVecino'");
         mysqli_query($conn, "UPDATE cola SET id = '$idVecino' WHERE id = 0");
     }
-    header('Location: canciones.php');
+    header("Location: canciones.php?cola=1");
     exit();
 }

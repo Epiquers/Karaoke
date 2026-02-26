@@ -28,7 +28,7 @@ $result_todas = mysqli_query($conn, $consulta_todas);
 <body class="text-light">
 
     <div class="app-container">
-        <?php include 'navbar.php'; ?>
+        <?php include '../includes/navbar.php'; ?>
 
         <div class="admin-main">
             <div class="admin-form-panel p-4">

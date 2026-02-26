@@ -108,7 +108,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
 <body class="text-light">
 
-    <?php include 'navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <div class="container-fluid">
         <div class="row">
@@ -239,28 +239,29 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
             </div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             <script>
-                // Capturamos el input de búsqueda
-                const buscador = document.getElementById('inputBusqueda');
+                // Filtro de búsqueda 
+                document.addEventListener('DOMContentLoaded', function() {
+                    const buscador = document.getElementById('inputBusqueda');
 
-                // Escuchamos cuando el usuario escriba algo
-                buscador.addEventListener('input', function() {
+                    buscador.addEventListener('input', function() {
+                        let texto = this.value.toLowerCase().trim();
+                        let canciones = document.querySelectorAll('.item-cancion');
 
-                    let texto = this.value.toLowerCase(); // Lo que el usuario busca
-                    let canciones = document.querySelectorAll('.item-cancion'); // Todas las filas
+                        canciones.forEach(function(item) {
+                            let titulo = item.getAttribute('data-titulo')
+                            "";
+                            let artista = item.getAttribute('data-artista')
+                            "";
 
-                    // Recorremos cada canción una por una
-                    for (let i = 0; i < canciones.length; i++) {
-
-                        let titulo = canciones[i].getAttribute('data-titulo');
-                        let artista = canciones[i].getAttribute('data-artista');
-
-                        // Si el texto está en el título O en el artista, se muestra
-                        if (titulo.indexOf(texto) > -1 || artista.indexOf(texto) > -1) {
-                            canciones[i].style.display = "flex";
-                        } else {
-                            canciones[i].style.display = "none";
-                        }
-                    }
+                            if (titulo.includes(texto) || artista.includes(texto)) {
+                                item.classList.remove('d-none');
+                                item.classList.add('d-flex');
+                            } else {
+                                item.classList.remove('d-flex');
+                                item.classList.add('d-none');
+                            }
+                        });
+                    });
                 });
                 // Pantalla completa
                 const btnFs = document.getElementById('btnFullscreen');
@@ -270,6 +271,13 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         if (video.requestFullscreen) video.requestFullscreen();
                         else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
                     });
+                }
+
+                // Si venimos de mover o borrar una canción, abrimos la pestaña de cola automáticamente
+                if (window.location.search.includes("cola=1")) {
+                    new bootstrap.Tab(
+                        document.querySelector('[data-bs-target="#tab-cola"]')
+                    ).show();
                 }
             </script>
 </body>

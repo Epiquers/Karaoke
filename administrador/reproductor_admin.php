@@ -50,7 +50,7 @@ $resultado = mysqli_query($conn, $consulta);
 </head>
 <body class="text-light">
 
-    <?php include 'navbar.php'; ?>
+    <?php include '../includes/navbar.php'; ?>
 
     <div class="container my-5">
         <div class="row mb-5 align-items-center">
