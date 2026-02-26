@@ -21,9 +21,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $row = mysqli_fetch_assoc($result);
             $_SESSION["idUsuario"] = $row['id'];
             $_SESSION['nombre'] = $row['nombre'];
+            $_SESSION['rol'] = $row['rol'];
 
             // Redirigimos según el rol
-            switch ($row['rol']) {
+            switch ($_SESSION['rol']) {
                 case 1:
                     header("Location: usuario/canciones.php");
                     exit;
