@@ -64,7 +64,7 @@ $usuario = mysqli_fetch_assoc($res);
 
                 <?= $mensaje ?>
 
-                <div class="card card-dark shadow-lg">
+                <div class="card card-dark">
                     <div class="card-body p-4">
                         <form action="" method="POST">
                             

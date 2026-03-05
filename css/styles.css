@@ -30,6 +30,15 @@ body {
   color: #ffffff;
 }
 
+/* Placeholder más pequeño en campos grandes para no superar al label */
+.form-control-lg::placeholder,
+textarea.form-control-lg::placeholder,
+.page-canciones .form-control-lg::placeholder,
+.page-canciones textarea.form-control-lg::placeholder {
+  font-size: 0.78em !important;
+  color: #80848d !important;
+}
+
 .form-control:focus {
   background-color: #2a2a2a;
   color: #ffffff;
@@ -155,6 +164,8 @@ a:hover {
     background-color: #000;
 }
 
-.page-canciones input::placeholder {
-    color: #ffffff;
+.page-canciones input::placeholder,
+.page-canciones textarea::placeholder {
+  color: #cdd1da;
+  font-size: 0.95em;
 }

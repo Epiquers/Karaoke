@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-4 mx-lg-4">
         <a class="navbar-brand fw-bold text-warning" href="canciones_admin.php">
             🎤 Kantabile
         </a>
@@ -34,16 +34,31 @@
                         <i class="bi bi-gear-fill me-1"></i> Usuarios
                     </a>
                 </li>
-                <?php } else {
+                <?php
+                    } else {
                         $pagina_actual = basename($_SERVER['PHP_SELF']);
+
                         if ($pagina_actual == 'perfil.php') {
                 ?>
-                            <a class="nav-link fw-bold text-info" href="../usuario/canciones.php">Principal</a>
-                        <?php } else { ?>
-                            <a class="nav-link fw-bold text-warning" href="../usuario/perfil.php">Mi Perfil</a>
-                        <?php } ?>
+                    <li class="nav-item"><a class="nav-link fw-bold text-info" href="../usuario/canciones.php">Principal</a></li>
+                    <li class="nav-item"><a class="nav-link fw-bold text-warning" href="../usuario/peticiones.php">Peticiones</a></li>
 
-            <?php } ?>
+                <?php
+                        } elseif ($pagina_actual == 'canciones.php') {
+                ?>
+                    <li class="nav-item"><a class="nav-link fw-bold text-info" href="../usuario/perfil.php">Mi Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link fw-bold text-warning" href="../usuario/peticiones.php">Peticiones</a></li>
+
+                <?php
+                        } elseif ($pagina_actual == 'peticiones.php') {
+                ?>
+                    <li class="nav-item"><a class="nav-link fw-bold text-info" href="../usuario/canciones.php">Principal</a></li>
+                    <li class="nav-item"><a class="nav-link fw-bold text-warning" href="../usuario/perfil.php">Mi Perfil</a></li>
+
+            <?php
+                        } 
+                    } 
+            ?>
 
             <li class="nav-item">
                 <a class="btn btn-main btn-sm text-white px-3 ms-3" href="../logout.php">

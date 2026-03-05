@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-12-2025 a las 14:09:36
+-- Tiempo de generación: 05-03-2026 a las 21:29:00
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -32,9 +32,9 @@ USE `karaoke`;
 DROP TABLE IF EXISTS `canciones`;
 CREATE TABLE `canciones` (
   `id` int(11) NOT NULL,
-  `titulo` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `artista` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `archivo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `titulo` varchar(200) NOT NULL,
+  `artista` varchar(100) NOT NULL,
+  `archivo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -65,8 +65,37 @@ CREATE TABLE `cola` (
 --
 
 INSERT INTO `cola` (`id`, `id_usuario`, `id_cancion`) VALUES
-(32, 2, 1),
-(33, 2, 2);
+(24, 1, 1),
+(28, 1, 1),
+(25, 1, 2),
+(3, 1, 3),
+(27, 2, 2),
+(15, 3, 4),
+(16, 3, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `peticiones`
+--
+
+DROP TABLE IF EXISTS `peticiones`;
+CREATE TABLE `peticiones` (
+  `id_peticion` int(11) NOT NULL,
+  `usuario` int(11) NOT NULL,
+  `artista` varchar(50) NOT NULL,
+  `titulo` varchar(50) NOT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 - pendiente\r\n1 - realizado',
+  `fechaHora` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `peticiones`
+--
+
+INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado`, `fechaHora`) VALUES
+(1, 1, 'dsafds', 'adsfadsf', 0, '2026-03-05 20:09:00'),
+(2, 1, 'sdfs', 'sdfs', 0, '2026-03-05 20:11:03');
 
 -- --------------------------------------------------------
 
@@ -80,16 +109,18 @@ CREATE TABLE `usuarios` (
   `nombre` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
   `passwd` varchar(255) NOT NULL,
-  `rol` int(11) DEFAULT 1
+  `rol` int(11) NOT NULL DEFAULT 1 COMMENT '1-Usuario\r\n2-Administrador',
+  `registrado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `email`, `passwd`, `rol`) VALUES
-(1, 'Admin', 'admin@karaoke.com', '1234', 2),
-(2, 'Juan', 'juan@test.com', '1234', 1);
+INSERT INTO `usuarios` (`id`, `nombre`, `email`, `passwd`, `rol`, `registrado`) VALUES
+(1, 'Admin', 'admin@karaoke.com', '1234', 2, '2026-03-05 18:55:19'),
+(2, 'Juan', 'juan@test.com', '1234', 1, '2026-03-05 18:55:19'),
+(3, 'Jose Luis', 'prueba@karaoke.com', '1234', 1, '2026-03-05 18:55:19');
 
 --
 -- Índices para tablas volcadas
@@ -105,7 +136,16 @@ ALTER TABLE `canciones`
 -- Indices de la tabla `cola`
 --
 ALTER TABLE `cola`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_usuario` (`id_usuario`,`id_cancion`),
+  ADD KEY `id_cancion` (`id_cancion`);
+
+--
+-- Indices de la tabla `peticiones`
+--
+ALTER TABLE `peticiones`
+  ADD PRIMARY KEY (`id_peticion`),
+  ADD KEY `usuario` (`usuario`);
 
 --
 -- Indices de la tabla `usuarios`
@@ -128,13 +168,36 @@ ALTER TABLE `canciones`
 -- AUTO_INCREMENT de la tabla `cola`
 --
 ALTER TABLE `cola`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT de la tabla `peticiones`
+--
+ALTER TABLE `peticiones`
+  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `cola`
+--
+ALTER TABLE `cola`
+  ADD CONSTRAINT `cola_ibfk_1` FOREIGN KEY (`id_cancion`) REFERENCES `canciones` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cola_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `peticiones`
+--
+ALTER TABLE `peticiones`
+  ADD CONSTRAINT `peticiones_ibfk_1` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
