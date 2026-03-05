@@ -144,3 +144,17 @@ a:hover {
             box-shadow: none;
         }
 
+        .btn-link:hover {
+            text-decoration: none;
+            color: #dc3545;
+        }
+
+/* ---------- PÁGINA CANCIONES (USUARIO) ---------- */
+
+.page-canciones {
+    background-color: #000;
+}
+
+.page-canciones input::placeholder {
+    color: #ffffff;
+}
