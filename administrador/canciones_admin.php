@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../includes/conexion.php';
+include 'seguridad_admin.php';
 
 // 1️⃣ ELIMINAR canción
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {

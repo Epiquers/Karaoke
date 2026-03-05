@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../includes/conexion.php';
+include 'seguridad_usuario.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 
