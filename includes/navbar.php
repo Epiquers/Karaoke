@@ -30,7 +30,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link btn btn-outline-light btn-sm px-3 me-2" href="usuarios_admin.php">
+                    <a class="nav-link btn btn-outline-light btn-sm px-3 me-2" href="perfil_admin.php">
                         <i class="bi bi-gear-fill me-1"></i> Usuarios
                     </a>
                 </li>
