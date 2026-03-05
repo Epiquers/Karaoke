@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-03-2026 a las 21:29:00
+-- Tiempo de generación: 05-03-2026 a las 21:45:21
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -89,14 +89,6 @@ CREATE TABLE `peticiones` (
   `fechaHora` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `peticiones`
---
-
-INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado`, `fechaHora`) VALUES
-(1, 1, 'dsafds', 'adsfadsf', 0, '2026-03-05 20:09:00'),
-(2, 1, 'sdfs', 'sdfs', 0, '2026-03-05 20:11:03');
-
 -- --------------------------------------------------------
 
 --
@@ -110,6 +102,7 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) NOT NULL,
   `passwd` varchar(255) NOT NULL,
   `rol` int(11) NOT NULL DEFAULT 1 COMMENT '1-Usuario\r\n2-Administrador',
+  `estado` tinyint(1) NOT NULL COMMENT '0 - activo\r\n1 - bloqueado',
   `registrado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -117,10 +110,10 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `email`, `passwd`, `rol`, `registrado`) VALUES
-(1, 'Admin', 'admin@karaoke.com', '1234', 2, '2026-03-05 18:55:19'),
-(2, 'Juan', 'juan@test.com', '1234', 1, '2026-03-05 18:55:19'),
-(3, 'Jose Luis', 'prueba@karaoke.com', '1234', 1, '2026-03-05 18:55:19');
+INSERT INTO `usuarios` (`id`, `nombre`, `email`, `passwd`, `rol`, `estado`, `registrado`) VALUES
+(1, 'Admin', 'admin@karaoke.com', '1234', 2, 0, '2026-03-05 20:35:27'),
+(2, 'Juan', 'juan@test.com', '1234', 1, 0, '2026-03-05 18:55:19'),
+(3, 'Jose Luis', 'prueba@karaoke.com', '1234', 1, 0, '2026-03-05 18:55:19');
 
 --
 -- Índices para tablas volcadas
@@ -174,7 +167,7 @@ ALTER TABLE `cola`
 -- AUTO_INCREMENT de la tabla `peticiones`
 --
 ALTER TABLE `peticiones`
-  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
