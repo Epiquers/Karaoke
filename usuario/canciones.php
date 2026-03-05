@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../includes/conexion.php';
+include 'seguridad_usuario.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 
@@ -41,72 +42,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
-    <style>
-        body {
-            background-color: #000;
-        }
-
-        .card-dark {
-            background-color: #151515;
-            border: 1px solid #333;
-            border-radius: 8px;
-        }
-
-        .sidebar-scroll {
-            height: calc(100vh - 180px);
-            overflow-y: auto;
-        }
-
-        @media (min-width: 992px) {
-            .player-height {
-                height: calc(100vh - 70px);
-                display: flex;
-                align-items: center;
-            }
-        }
-
-        .nav-pills .nav-link {
-            color: #fff;
-            border-radius: 0;
-            padding: 12px;
-        }
-
-        .nav-pills .nav-link.active {
-            background-color: #dc3545 !important;
-        }
-
-        /* Estilo para el buscador */
-        .search-container {
-            background: #151515;
-            padding: 10px;
-            border-bottom: 1px solid #333;
-        }
-
-        input::placeholder {
-            color: #ffffff;
-        }
-
-        .form-control-dark {
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-        }
-
-        .form-control-dark:focus {
-            background: #222;
-            color: white;
-            border-color: #dc3545;
-            box-shadow: none;
-        }
-
-        .btn-link:hover {
-            text-decoration: none;
-            color: #dc3545;
-        }
-    </style>
 </head>
 
-<body class="text-light">
+<body class="text-light page-canciones">
 
     <?php include '../includes/navbar.php'; ?>
 
