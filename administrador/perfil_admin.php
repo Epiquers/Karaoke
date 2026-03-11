@@ -84,7 +84,7 @@ if (isset($_POST['accion_estado'])) {
     <?php include("../includes/navbar.php"); ?>
 
     <div class="container mt-5">
-        <div class="card-dark">
+    <div class="card-dark">
             <h2 class="mb-4"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h2>
 
             <table class="table table-dark table-hover align-middle text-center">

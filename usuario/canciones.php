@@ -95,7 +95,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             <h6 class="text-secondary small mb-0">SIGUIENTES TEMAS</h6>
                             <?php if (mysqli_num_rows($result_cola) > 0) { ?>
                                 <form action="vaciar_cola.php" method="POST" onsubmit="return confirm('¿Vaciar toda la lista?');">
-                                    <button type="submit" name="limpiar_cola" class="btn btn-outline-danger btn-sm border-0 py-0" style="font-size: 0.7rem;">
+                                    <button type="submit" name="limpiar_cola" class="btn btn-outline-danger btn-sm border-0 py-0" style="font-size: 0.7rem;" aria-label="Vaciar la cola">
                                         <input type="hidden" name="idUsuario" value="<?= $idUsuario ?> ">
                                         <i class="bi bi-trash3-fill me-1"></i>VACIAR
                                     </button>

@@ -77,7 +77,7 @@ $result_cola = mysqli_query($conn, $consulta_cola);
             </div>
 
             <div class="col-12 col-lg-4">
-                <div class="card card-dark sticky-top" style="top:20px;">
+                <div class="card card-dark sticky-top" style="top: 20px;">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center mb-4">Cola de reproducción</h5>
                         <?php
