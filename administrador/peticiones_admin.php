@@ -12,10 +12,9 @@ if (isset($_POST['cambiar_estado'])) {
     exit();
 }
 
-// Obtener peticiones con nombre de usuario
-$consulta = "SELECT p.id_peticion, p.usuario, u.nombre AS nombre_usuario, p.artista, p.titulo, p.estado, p.fechaHora
-             FROM peticiones p
-             LEFT JOIN usuarios u ON p.usuario = u.id
+$consulta = "SELECT  p.id_peticion, p.usuario, u.nombre AS nombre_usuario, p.artista, p.titulo, p.estado, p.fechaHora
+             FROM peticiones p, usuarios u
+             WHERE p.usuario = u.id
              ORDER BY p.fechaHora DESC";
 $resultado = mysqli_query($conn, $consulta);
 ?>
