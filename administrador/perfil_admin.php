@@ -3,7 +3,7 @@ session_start();
 include("../includes/conexion.php");
 
 
-// 2. LÓGICA DE ACTUALIZACIÓN COMPLETA (Formulario)
+// LÓGICA DE ACTUALIZACIÓN COMPLETA (Formulario)
 if (isset($_POST['update_user'])) {
     $id = $_POST['id'];
     $nombre = $_POST['nombre'];
@@ -25,7 +25,7 @@ if (isset($_POST['update_user'])) {
         echo "Error: " . mysqli_error($conn);
     }
 }
-// --- BOTÓN RÁPIDO DE ESTADO ---
+// Botón rápido de estado
 if (isset($_POST['accion_estado'])) {
     $id = $_POST['id'];
     $estado = $_POST['nuevo_estado'];

@@ -3,14 +3,14 @@ session_start();
 include '../includes/conexion.php';
 include 'seguridad_admin.php';
 
-// 1️⃣ ELIMINAR canción
+// ELIMINAR canción
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
     $idEliminar = $_POST['id_cancion'];
     $consulta_borrar = "DELETE FROM canciones WHERE id = '$idEliminar'";
     mysqli_query($conn, $consulta_borrar);
 }
 
-// 2️⃣ TODAS las canciones
+// TODAS las canciones
 $consulta_todas = "SELECT * FROM canciones ORDER BY id DESC";
 $result_todas = mysqli_query($conn, $consulta_todas);
 ?>

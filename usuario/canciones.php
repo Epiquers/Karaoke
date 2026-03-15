@@ -20,14 +20,14 @@ if ($primera) {
     $cancion_actual = mysqli_fetch_assoc($result_cancion);
 }
 
-// 2️⃣ ACCIÓN: BORRAR si pulsa siguiente
+// Borrar la primera canción de la cola al pulsar siguiente
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['siguiente'])) {
     mysqli_query($conn, "DELETE FROM cola WHERE id_usuario = '$idUsuario' ORDER BY id ASC LIMIT 1");
     header('Location:canciones.php ');
     exit();
 }
 
-// 3️⃣ CONSULTAS
+// Consulta completa de la cola (con ID fila)
 $result_cola = mysqli_query($conn, "SELECT * FROM cola WHERE id_usuario = '$idUsuario' ORDER BY id ASC");
 $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 ?>
