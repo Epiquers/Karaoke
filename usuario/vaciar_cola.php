@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("../includes/conexion.php");
-// ACCIÓN: LIMPIAR TODA LA COLA
+// Limpiar la cola de un usuario
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['limpiar_cola'])) {
     // Usamos el idUsuario que recogimos del formulario oculto, aunque también podríamos usar el de la sesión
     $idUsuario = $_POST['idUsuario'];

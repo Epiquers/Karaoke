@@ -2,7 +2,7 @@
 session_start();
 include("../includes/conexion.php");
 
-// ACCIÓN: MOVER CANCIÓN (SUBIR O BAJAR)
+// Mover canción en la cola (subir o bajar)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mover'])) {
     $idUsuario = $_SESSION['idUsuario'];
     $idActual = $_POST['idCola'];
