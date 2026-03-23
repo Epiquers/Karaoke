@@ -5,7 +5,7 @@ include 'seguridad_usuario.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 
-// 1️⃣ PRIMERA canción de la cola
+// PRIMERA canción de la cola
 $consulta_primeraCancion = "SELECT * FROM cola WHERE id_usuario = '$idUsuario' ORDER BY id ASC LIMIT 1";
 $result_primera = mysqli_query($conn, $consulta_primeraCancion);
 $primera = mysqli_fetch_assoc($result_primera);
@@ -190,8 +190,10 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             "";
                             let artista = item.getAttribute('data-artista')
                             "";
+                            let estilo = item.getAttribute('data-estilo')
+                            "";
 
-                            if (titulo.includes(texto) || artista.includes(texto)) {
+                            if (titulo.includes(texto) || artista.includes(texto) || estilo.includes(texto)) {
                                 item.classList.remove('d-none');
                                 item.classList.add('d-flex');
                             } else {

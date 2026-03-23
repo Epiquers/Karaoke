@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-03-2026 a las 21:45:21
+-- Tiempo de generación: 23-03-2026 a las 20:08:32
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -34,6 +34,7 @@ CREATE TABLE `canciones` (
   `id` int(11) NOT NULL,
   `titulo` varchar(200) NOT NULL,
   `artista` varchar(100) NOT NULL,
+  `estilo` varchar(100) NOT NULL,
   `archivo` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -41,11 +42,11 @@ CREATE TABLE `canciones` (
 -- Volcado de datos para la tabla `canciones`
 --
 
-INSERT INTO `canciones` (`id`, `titulo`, `artista`, `archivo`) VALUES
-(1, 'Bohemian Rhapsody', 'Queen', 'videos/bohemian.mp4'),
-(2, 'Imagine', 'John Lennon', 'videos/imagine.mp4'),
-(3, 'Sweet Child O Mine', 'Guns N Roses', 'videos/sweet.mp4'),
-(4, 'Hotel California', 'Eagles', 'videos/hotel.mp4');
+INSERT INTO `canciones` (`id`, `titulo`, `artista`, `estilo`, `archivo`) VALUES
+(1, 'Bohemian Rhapsody', 'Queen', '', 'videos/bohemian.mp4'),
+(2, 'Imagine', 'John Lennon', '', 'videos/imagine.mp4'),
+(3, 'Sweet Child O Mine', 'Guns N Roses', '', 'videos/sweet.mp4'),
+(4, 'Hotel California', 'Eagles', '', 'videos/hotel.mp4');
 
 -- --------------------------------------------------------
 
@@ -88,6 +89,13 @@ CREATE TABLE `peticiones` (
   `estado` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 - pendiente\r\n1 - realizado',
   `fechaHora` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `peticiones`
+--
+
+INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado`, `fechaHora`) VALUES
+(1, 3, 'Midnite', 'I am a Bushman', 0, '2026-03-11 19:42:16');
 
 -- --------------------------------------------------------
 
@@ -167,7 +175,7 @@ ALTER TABLE `cola`
 -- AUTO_INCREMENT de la tabla `peticiones`
 --
 ALTER TABLE `peticiones`
-  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

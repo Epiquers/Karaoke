@@ -30,16 +30,52 @@ body {
   color: #ffffff;
 }
 
+/* Tema oscuro en select */
+.form-select {
+  background-color: #2a2a2a !important;
+  border: 1px solid #444 !important;
+  color: #ffffff !important;
+  appearance: none;
+  background-image: none !important;
+}
+
+/* Forzar tema oscuro en select del panel admin */
+.admin-form-panel .form-select {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+  border-color: #444 !important;
+  color-scheme: dark;
+}
+
 /* Placeholder más pequeño en campos grandes para no superar al label */
 .form-control::placeholder {
   color: #80848d !important;
 }
 
+/* Efecto de foco con borde rojo y fondo oscuro */
 .form-control:focus {
   background-color: #2a2a2a;
   color: #ffffff;
   box-shadow: none;
   border: 1px solid #dc3545;
+}
+
+/* Efecto de foco en select con borde rojo y fondo oscuro */
+.form-select:focus {
+  background-color: #2a2a2a !important;
+  color: #ffffff !important;
+  box-shadow: none;
+  border: 1px solid #dc3545 !important;
+}
+
+.form-select option {
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+
+.admin-form-panel .form-select option {
+  background-color: #1f1f1f;
+  color: #ffffff;
 }
 
 /* ---------- BOTONES ---------- */

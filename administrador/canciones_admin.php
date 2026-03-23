@@ -45,6 +45,18 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                 <label class="form-label">Artista</label>
                                 <input type="text" class="form-control" name="artista" required>
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">Estilo</label>
+                                <select class="form-select" name="estilo" required>
+                                    <option value="">Selecciona un estilo</option>
+                                    <option value="Pop">Pop</option>
+                                    <option value="Rock">Rock</option>
+                                    <option value="Reggae">Reggae</option>
+                                    <option value="Blues">Blues</option>
+                                    <option value="Rap">Rap</option>
+                                    <option value="Indie">Indie</option>
+                                </select>
+                            </div>
                             <div class="mb-4">
                                 <label class="form-label">Archivo MP4</label>
                                 <input type="file" class="form-control" name="archivo" accept="video/mp4" required>
