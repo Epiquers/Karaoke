@@ -4,10 +4,31 @@ include '../includes/conexion.php';
 include 'seguridad_admin.php';
 
 // ELIMINAR canción
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
+/* if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
     $idEliminar = $_POST['id_cancion'];
     $consulta_borrar = "DELETE FROM canciones WHERE id = '$idEliminar'";
     mysqli_query($conn, $consulta_borrar);
+} */
+
+// ELIMINAR canción y sus archivos físicos
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
+    $idEliminar = $_POST['id_cancion'];
+
+    // Primero obtenemos las rutas para borrar los archivos del disco
+    $res = mysqli_query($conn, "SELECT cancion, letra FROM canciones WHERE id = '$idEliminar'");
+    if ($fila = mysqli_fetch_assoc($res)) {
+        // Ponemos ../ porque estamos en la carpeta /admin y uploads está fuera
+        if (file_exists("../" . $fila['cancion'])) { unlink("../" . $fila['cancion']); }
+        if (file_exists("../" . $fila['letra'])) { unlink("../" . $fila['letra']); }
+    }
+
+    // Ahora borramos el registro de la BD
+    $consulta_borrar = "DELETE FROM canciones WHERE id = '$idEliminar'";
+    mysqli_query($conn, $consulta_borrar);
+
+    // Refrescamos para evitar reenvíos de formulario
+    header("Location: canciones_admin.php");
+    exit();
 }
 
 // TODAS las canciones
@@ -58,8 +79,12 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label">Archivo MP4</label>
-                                <input type="file" class="form-control" name="archivo" accept="video/mp4" required>
+                                <label class="form-label">Archivo de Cancion (.mp3)</label>
+                                <input type="file" class="form-control" name="archivo_cancion" accept=".mp3" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Archivo de Letra (.lrc/.txt)</label>
+                                <input type="file" name="archivo_letra" class="form-control form-control-dark" accept=".lrc, .txt" required>
                             </div>
                             <button type="submit" class="btn btn-main w-100 text-white fw-bold">GUARDAR CANCIÓN</button>
                         </form>
@@ -68,7 +93,7 @@ $result_todas = mysqli_query($conn, $consulta_todas);
 
                 <div class="mt-4 p-3 border border-secondary rounded opacity-50">
                     <small class="text-secondary d-block text-center">
-                        Solo se permiten archivos en formato MP4.
+                        Solo se permiten archivos en formato MP3/MP4-LRC/TXT.
                     </small>
                 </div>
             </div>
@@ -89,7 +114,7 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                     <div class='ps-2'>
                                         <h6 class='mb-1 fw-bold text-warning'>" . $cancion['titulo'] . "</h6>
                                         <p class='mb-0 text-secondary small'>" . $cancion['artista'] . "</p>
-                                        <code class='text-muted smaller' style='font-size: 0.7rem;'>" . $cancion['archivo'] . "</code>
+                                        <code class='text-muted smaller' style='font-size: 0.7rem;'>" . $cancion['cancion'] . "</code>
                                     </div>
                                     <div class='pe-2'>
                                         <form method='POST' style='display:inline;' onsubmit=\"return confirm('¿Seguro que quieres eliminar esta canción?');\">

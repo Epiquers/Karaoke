@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-03-2026 a las 20:08:32
+-- Tiempo de generación: 26-03-2026 a las 02:04:26
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `karaoke`
 --
+DROP DATABASE IF EXISTS `karaoke`;
 CREATE DATABASE IF NOT EXISTS `karaoke` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 USE `karaoke`;
 
@@ -35,18 +36,20 @@ CREATE TABLE `canciones` (
   `titulo` varchar(200) NOT NULL,
   `artista` varchar(100) NOT NULL,
   `estilo` varchar(100) NOT NULL,
-  `archivo` varchar(255) NOT NULL
+  `cancion` varchar(255) NOT NULL,
+  `letra` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `canciones`
 --
 
-INSERT INTO `canciones` (`id`, `titulo`, `artista`, `estilo`, `archivo`) VALUES
-(1, 'Bohemian Rhapsody', 'Queen', '', 'videos/bohemian.mp4'),
-(2, 'Imagine', 'John Lennon', '', 'videos/imagine.mp4'),
-(3, 'Sweet Child O Mine', 'Guns N Roses', '', 'videos/sweet.mp4'),
-(4, 'Hotel California', 'Eagles', '', 'videos/hotel.mp4');
+INSERT INTO `canciones` (`id`, `titulo`, `artista`, `estilo`, `cancion`, `letra`) VALUES
+(1, 'Bohemian Rhapsody', 'Queen', 'Rock', 'videos/bohemian.mp4', ''),
+(2, 'Imagine', 'John Lennon', '', 'videos/imagine.mp4', ''),
+(3, 'Sweet Child O Mine', 'Guns N Roses', '', 'videos/sweet.mp4', ''),
+(4, 'Hotel California', 'Eagles', '', 'videos/hotel.mp4', ''),
+(10, 'Profetas de la mañana', 'Vetusta Morla', 'Indie', 'uploads/canciones/Profetas_de_la_mañana_53.mp3', 'uploads/letras/Profetas_de_la_mañana_53..lrc');
 
 -- --------------------------------------------------------
 
@@ -58,21 +61,19 @@ DROP TABLE IF EXISTS `cola`;
 CREATE TABLE `cola` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) DEFAULT NULL,
-  `id_cancion` int(11) DEFAULT NULL
+  `id_cancion` int(11) DEFAULT NULL,
+  `cantante` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `cola`
 --
 
-INSERT INTO `cola` (`id`, `id_usuario`, `id_cancion`) VALUES
-(24, 1, 1),
-(28, 1, 1),
-(25, 1, 2),
-(3, 1, 3),
-(27, 2, 2),
-(15, 3, 4),
-(16, 3, 4);
+INSERT INTO `cola` (`id`, `id_usuario`, `id_cancion`, `cantante`) VALUES
+(15, 3, 4, ''),
+(16, 3, 4, ''),
+(27, 2, 2, ''),
+(45, 1, 10, 'Adrian');
 
 -- --------------------------------------------------------
 
@@ -95,7 +96,7 @@ CREATE TABLE `peticiones` (
 --
 
 INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado`, `fechaHora`) VALUES
-(1, 3, 'Midnite', 'I am a Bushman', 0, '2026-03-11 19:42:16');
+(1, 3, 'Midnite', 'I am a Bushman', 0, '2026-03-25 22:26:50');
 
 -- --------------------------------------------------------
 
@@ -163,13 +164,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `canciones`
 --
 ALTER TABLE `canciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `cola`
 --
 ALTER TABLE `cola`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `peticiones`

@@ -7,8 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCancion'])) {
 
     $idCancion = $_POST['idCancion'];
     $idUsuario = $_SESSION['idUsuario'];
+    $cantante = $_POST['cantante'];
 
-    $consulta_añadir = "INSERT INTO cola (id_usuario, id_cancion) VALUES ('$idUsuario', '$idCancion')";
+    $consulta_añadir = "INSERT INTO cola (id_usuario, id_cancion, cantante) VALUES ('$idUsuario', '$idCancion', '$cantante')";
     $result = mysqli_query($conn, $consulta_añadir);
 
     // Cerramos conexion

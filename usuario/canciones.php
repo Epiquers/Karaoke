@@ -76,14 +76,18 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             <?php while ($row = mysqli_fetch_assoc($resultado_canciones)) { ?>
                                 <div class="item-cancion d-flex justify-content-between align-items-center p-3 card-dark mb-2"
                                     data-titulo="<?= strtolower($row['titulo']) ?>"
-                                    data-artista="<?= strtolower($row['artista']) ?>">
+                                    data-artista="<?= strtolower($row['artista']) ?>"
+                                    data-estilo="<?= strtolower($row['estilo']) ?>">
                                     <div class="overflow-hidden">
                                         <h6 class="mb-1 fw-bold text-warning text-truncate small"><?= $row['titulo'] ?></h6>
                                         <p class="mb-0 text-secondary smaller text-truncate"><?= $row['artista'] ?></p>
                                     </div>
-                                    <form action="cancion_añadir.php" method="POST" class="ms-2">
+                                    <form action="cancion_añadir.php" method="POST" class="ms-2 d-flex flex-column gap-1">
+                                        <input type="text" name="cantante" class="form-control form-control-sm bg-dark border-secondary text-white"
+                                            placeholder="¿Quién canta?" style="font-size: 0.7rem; max-width: 100px;" required>
+
                                         <input type="hidden" name="idCancion" value="<?= $row['id'] ?>">
-                                        <button type="submit" class="btn btn-main btn-sm">Añadir</button>
+                                        <button type="submit" class="btn btn-main btn-sm w-100" style="font-size: 0.7rem;">Añadir</button>
                                     </form>
                                 </div>
                             <?php } ?>
@@ -116,6 +120,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                         <div class="overflow-hidden">
                                             <h6 class="mb-1 fw-bold <?= $esSonando ? 'text-white' : 'text-warning' ?> text-truncate small"><?= $c['titulo'] ?></h6>
                                             <p class="mb-0 text-secondary smaller text-truncate"><?= $c['artista'] ?></p>
+                                            <span class="badge bg-secondary opacity-75 mt-1" style="font-size: 0.7rem;">
+                                                <i class="bi bi-person-fill me-1"></i><?= $row['cantante'] ?>
+                                            </span>
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
 
@@ -157,9 +164,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         <h2 class="h4 fw-bold text-warning mb-1"><?= $cancion_actual['titulo'] ?></h2>
                         <p class="text-secondary mb-4"><?= $cancion_actual['artista'] ?></p>
                         <div class="ratio ratio-16x9 bg-dark rounded shadow-lg border border-secondary mb-4 mx-auto" style="max-width: 900px;">
-                            <video id="videoKaraoke" controls preload="metadata">
-                                <source src="<?= $cancion_actual['archivo'] ?>" type="video/mp4">
-                            </video>
+                            <audio id="videoKaraoke" controls preload="metadata">
+                                <source src="<?= "../" . $cancion_actual['cancion'] ?>" type="audio/mpeg">
+                            </audio>
                         </div>
                         <div class="d-flex justify-content-center gap-2">
                             <form action="" method="POST">
@@ -186,12 +193,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         let canciones = document.querySelectorAll('.item-cancion');
 
                         canciones.forEach(function(item) {
-                            let titulo = item.getAttribute('data-titulo')
-                            "";
-                            let artista = item.getAttribute('data-artista')
-                            "";
-                            let estilo = item.getAttribute('data-estilo')
-                            "";
+                            let titulo = item.getAttribute('data-titulo') || "";
+                            let artista = item.getAttribute('data-artista') || "";
+                            let estilo = item.getAttribute('data-estilo') || "";
 
                             if (titulo.includes(texto) || artista.includes(texto) || estilo.includes(texto)) {
                                 item.classList.remove('d-none');
@@ -207,9 +211,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                 const btnFs = document.getElementById('btnFullscreen');
                 if (btnFs) {
                     btnFs.addEventListener('click', () => {
-                        const video = document.getElementById('videoKaraoke');
-                        if (video.requestFullscreen) video.requestFullscreen();
-                        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+                        const audio = document.getElementById('videoKaraoke');
+                        if (audio.requestFullscreen) audio.requestFullscreen();
+                        else if (audio.webkitRequestFullscreen) audio.webkitRequestFullscreen();
                     });
                 }
 
