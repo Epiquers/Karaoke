@@ -36,7 +36,7 @@
             ?>
 
             <li class="nav-item">
-                <a class="btn btn-main btn-sm text-white px-3 ms-3" href="../logout.php">
+                <a class="btn btn-danger btn-sm px-3 ms-3" href="../logout.php">
                     <i class="bi bi-box-arrow-right me-1"></i> Salir
                 </a>
             </li>
