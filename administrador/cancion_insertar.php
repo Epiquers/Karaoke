@@ -32,7 +32,7 @@ exit(); */
 session_start();
 include '../includes/conexion.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_cancion'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_voz'])) {
 
     // Recogemos y limpiamos los datos del formulario para evirar inyecciones SQL y problemas con caracteres especiales como por ejemplo
     // que el artista se llame Guns N' Roses, que el apóstrofe da problemas en la consulta SQL
@@ -58,26 +58,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_cancion'])) {
     }
 
     //Obtenemos la extensión original de los archivos (mp4, mp3, lrc, etc.)
-    $ext_cancion = pathinfo($_FILES['archivo_cancion']['name'], PATHINFO_EXTENSION);
+    $ext_voz = pathinfo($_FILES['archivo_voz']['name'], PATHINFO_EXTENSION);
+    $ext_instrumental = pathinfo($_FILES['archivo_instrumental']['name'], PATHINFO_EXTENSION);
 
     //Creamos el nombre final (Título_Tiempo.extension)
     // Añadimos time() al final por si subes dos veces la misma canción, que no se borren
-    $nombre_final_cancion = $nombre_limpio . "_" . date('s') . "." . $ext_cancion;
+    $nombre_final_voz = $nombre_limpio . "_(voz)_" . date('s') . "." . $ext_voz;
+    $nombre_final_instrumental = $nombre_limpio . "_(instrumental)_" . date('s')  . "." . $ext_instrumental;
     $nombre_final_letra = $nombre_limpio . "_" . date('s')  . ".lrc";
 
     // Rutas para GUARDAR en la BD (mejor guardarlas sin el ../ para el reproductor)
     // Guardamos ruta relativa desde la raíz para que el archivo sea accesible desde cualquier carpeta de la web (index, admin, etc.)
-    $db_cancion = "uploads/canciones/{$artista_folder}/". $nombre_final_cancion;
+    $db_voz = "uploads/canciones/{$artista_folder}/". $nombre_final_voz;
+    $db_instrumental = "uploads/canciones/{$artista_folder}/". $nombre_final_instrumental;
     $db_letra = "uploads/letras/{$artista_folder}/". $nombre_final_letra;
 
     // Intentamos mover ambos archivos
     if (
-        move_uploaded_file($_FILES['archivo_cancion']['tmp_name'], "../" . $db_cancion) &&
+        move_uploaded_file($_FILES['archivo_voz']['tmp_name'], "../" . $db_voz) && 
+        move_uploaded_file($_FILES['archivo_instrumental']['tmp_name'], "../" . $db_instrumental) &&
         move_uploaded_file($_FILES['archivo_letra']['tmp_name'], "../" . $db_letra)
     ) {
 
-        $sql = "INSERT INTO canciones (titulo, artista, estilo, cancion, letra)
-                VALUES ('$titulo', '$artista', '$estilo', '$db_cancion', '$db_letra')";
+        $sql = "INSERT INTO canciones (titulo, artista, estilo, voz, instrumental, letra)
+                VALUES ('$titulo', '$artista', '$estilo', '$db_voz', '$db_instrumental', '$db_letra')";
 
         mysqli_query($conn, $sql);
     }

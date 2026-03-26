@@ -10,23 +10,55 @@ include 'seguridad_admin.php';
     mysqli_query($conn, $consulta_borrar);
 } */
 
-// ELIMINAR canción y sus archivos físicos
+// ELIMINAR canción y sus archivos físicos (incluyendo limpieza de carpetas)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
-    $idEliminar = $_POST['id_cancion'];
+    $idEliminar = mysqli_real_escape_string($conn, $_POST['id_cancion']);
 
-    // Primero obtenemos las rutas para borrar los archivos del disco
-    $res = mysqli_query($conn, "SELECT cancion, letra FROM canciones WHERE id = '$idEliminar'");
+    // 1. Obtenemos todas las rutas de la base de datos
+    $res = mysqli_query($conn, "SELECT voz, instrumental, letra FROM canciones WHERE id = '$idEliminar'");
+    
     if ($fila = mysqli_fetch_assoc($res)) {
-        // Ponemos ../ porque estamos en la carpeta /admin y uploads está fuera
-        if (file_exists("../" . $fila['cancion'])) { unlink("../" . $fila['cancion']); }
-        if (file_exists("../" . $fila['letra'])) { unlink("../" . $fila['letra']); }
+        // Guardamos las rutas de los directorios para revisarlos luego
+        $directoriosARevisar = [];
+
+        // Lista de archivos a borrar
+        $archivosABorrar = [
+            '../' . $fila['voz'],      // La voz guía
+            '../' . $fila['instrumental'], // La instrumental
+            '../' . $fila['letra']         // El archivo .lrc
+        ];
+
+        foreach ($archivosABorrar as $rutaArchivo) {
+            if (!empty($rutaArchivo) && file_exists($rutaArchivo)) {
+                // Guardamos la carpeta que contiene el archivo
+                $directoriosARevisar[] = dirname($rutaArchivo);
+                
+                // Borramos el archivo
+                unlink($rutaArchivo);
+            }
+        }
+
+        // 2. Limpieza de directorios vacíos
+        // Eliminamos duplicados de directorios por si voz y letra comparten carpeta
+        $directoriosARevisar = array_unique($directoriosARevisar);
+
+        foreach ($directoriosARevisar as $dir) {
+            // Verificamos si es un directorio y si está vacío
+            // scandir devuelve . y .. por eso contamos si es igual a 2
+            if (is_dir($dir)) {
+                $files = scandir($dir);
+                if (count($files) <= 2) { 
+                    rmdir($dir); 
+                }
+            }
+        }
     }
 
-    // Ahora borramos el registro de la BD
+    // 3. Ahora borramos el registro de la BD
     $consulta_borrar = "DELETE FROM canciones WHERE id = '$idEliminar'";
     mysqli_query($conn, $consulta_borrar);
 
-    // Refrescamos para evitar reenvíos de formulario
+    // Refrescamos
     header("Location: canciones_admin.php");
     exit();
 }
@@ -79,8 +111,12 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label">Archivo de Cancion (.mp3)</label>
-                                <input type="file" class="form-control" name="archivo_cancion" accept=".mp3" required>
+                                <label class="form-label">Archivo de Voz (.mp3)</label>
+                                <input type="file" class="form-control" name="archivo_voz" accept=".mp3" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Archivo de Instrumental (.mp3)</label>
+                                <input type="file" class="form-control" name="archivo_instrumental" accept=".mp3" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Archivo de Letra (.lrc/.txt)</label>
@@ -114,7 +150,7 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                     <div class='ps-2'>
                                         <h6 class='mb-1 fw-bold text-warning'>" . $cancion['titulo'] . "</h6>
                                         <p class='mb-0 text-secondary small'>" . $cancion['artista'] . "</p>
-                                        <code class='text-muted smaller' style='font-size: 0.7rem;'>" . $cancion['cancion'] . "</code>
+                                        <code class='text-muted smaller' style='font-size: 0.7rem;'>" . $cancion['voz'] . "</code>
                                     </div>
                                     <div class='pe-2'>
                                         <form method='POST' style='display:inline;' onsubmit=\"return confirm('¿Seguro que quieres eliminar esta canción?');\">

@@ -55,7 +55,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
             padding: 40px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
         }
 
         .linea-karaoke {
@@ -67,29 +67,66 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
             z-index: 10;
         }
 
-        #linea-actual { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; }
-        #linea-siguiente { font-size: 1.8rem; opacity: 0.3; color: #ffb973; text-transform: uppercase; filter: blur(1px); }
+        #linea-actual {
+            font-size: 3.5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        #linea-siguiente {
+            font-size: 1.8rem;
+            opacity: 0.3;
+            color: #ffb973;
+            text-transform: uppercase;
+            filter: blur(1px);
+        }
 
         /* --- RELLENO PROGRESIVO --- */
         .palabra {
             display: inline-block;
             margin: 0 20px;
-            background-image: linear-gradient(to right, #b3ff01 var(--progress, 0%), rgba(255,255,255,0.2) var(--progress, 0%));
+            background-image: linear-gradient(to right, #b3ff01 var(--progress, 0%), rgba(255, 255, 255, 0.2) var(--progress, 0%));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             transition: transform 0.2s ease;
         }
-        .palabra.activa { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
-        .palabra.pasada { background-image: linear-gradient(to right, #666 100%, #666 100%); opacity: 0.5; }
+
+        .palabra.activa {
+            transform: scale(1.18);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        .palabra.pasada {
+            background-image: linear-gradient(to right, #666 100%, #666 100%);
+            opacity: 0.5;
+        }
 
         /* --- OVERLAY INTRO --- */
         #karaoke-intro {
             transition: opacity 0.5s ease;
-            background: rgba(0,0,0,0.95) !important;
+            background: rgba(0, 0, 0, 0.95) !important;
         }
-        #numero-cuenta { font-size: 9rem; text-shadow: 0 0 30px rgba(255,193,7,0.4); }
-        .animate-intro { animation: zoomIn 0.6s ease-out; }
-        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        #numero-cuenta {
+            font-size: 9rem;
+            text-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+        }
+
+        .animate-intro {
+            animation: zoomIn 0.6s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
@@ -169,7 +206,10 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                             </form>
                                         </div>
                                     </div>
-                            <?php } } else { echo '<p class="text-center text-muted py-5">Cola vacía</p>'; } ?>
+                            <?php }
+                            } else {
+                                echo '<p class="text-center text-muted py-5">Cola vacía</p>';
+                            } ?>
                         </div>
                     </div>
                 </div>
@@ -185,9 +225,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             <div id="karaoke-intro" class="d-none position-absolute w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center" style="z-index: 100; background: #000; top:0; left:0; border-radius: 15px;">
                                 <div class="animate-intro">
                                     <h4 class="text-secondary mb-0 text-uppercase small">Siguiente cantante:</h4>
-                                    <?php 
-                                        mysqli_data_seek($result_cola, 0);
-                                        $p = mysqli_fetch_assoc($result_cola); 
+                                    <?php
+                                    mysqli_data_seek($result_cola, 0);
+                                    $p = mysqli_fetch_assoc($result_cola);
                                     ?>
                                     <h1 class="display-3 fw-bold text-warning mb-4"><?= $p['cantante'] ?></h1>
                                     <hr class="w-50 mx-auto border-secondary mb-4">
@@ -199,22 +239,31 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div id="linea-actual" class="linea-karaoke"></div>
                             <div id="linea-siguiente" class="linea-karaoke"></div>
                         </div>
 
                         <div class="mx-auto mb-4" style="max-width: 900px;">
-                            <audio id="videoKaraoke" controls class="w-100 shadow">
-                                <source src="<?= "../" . $cancion_actual['cancion'] ?>" type="audio/mpeg">
+                            <audio id="videoKaraoke" controls class="w-100 shadow mb-2">
+                                <source src="<?= "../" . $cancion_actual['voz'] ?>" type="audio/mpeg">
                             </audio>
-                        </div>
 
-                        <div class="d-flex justify-content-center gap-2">
-                            <form action="" method="POST">
-                                <button name="siguiente" class="btn btn-main px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
-                            </form>
-                            <button id="btnFullscreen" class="btn btn-outline-light"><i class="bi bi-fullscreen"></i></button>
+                            <audio id="pistaInstrumental">
+                                <source src="<?= "../" . $cancion_actual['instrumental'] ?>" type="audio/mpeg">
+                            </audio>
+
+                            <div class="d-flex justify-content-center align-items-center gap-3 mt-3">
+                                <button id="btnGuia" class="btn btn-warning fw-bold">
+                                    <i class="bi bi-mic-fill"></i> VOZ GUÍA: ON
+                                </button>
+
+                                <form action="" method="POST">
+                                    <button name="siguiente" class="btn btn-main px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
+                                </form>
+
+                                <button id="btnFullscreen" class="btn btn-outline-light"><i class="bi bi-fullscreen"></i></button>
+                            </div>
                         </div>
                     </div>
                 <?php } else { ?>
@@ -229,138 +278,178 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // --- BUSCADOR ---
+        <?php if ($cancion_actual) : ?>
+                (function() {
+                    const audioGuia = document.getElementById('videoKaraoke');
+                    const audioInst = document.getElementById('pistaInstrumental');
+                    const btnGuia = document.getElementById('btnGuia');
+                    const intro = document.getElementById('karaoke-intro');
+                    const numCuenta = document.getElementById('numero-cuenta');
+                    const msgPrep = document.getElementById('mensaje-preparate');
+                    const displayActual = document.getElementById('linea-actual');
+                    const displaySiguiente = document.getElementById('linea-siguiente');
+
+                    let letras = [];
+                    let introMostrada = false;
+
+                    // 1. CARGA DE LETRAS
+                    fetch("../<?= $cancion_actual['letra'] ?>")
+                        .then(r => r.text())
+                        .then(data => {
+                            letras = parsearLRC(data);
+                            requestAnimationFrame(engine);
+                        });
+
+                    // 2. CONTROL VOZ GUÍA
+                    btnGuia.onclick = () => {
+                        audioGuia.muted = !audioGuia.muted;
+                        btnGuia.innerHTML = audioGuia.muted ? '<i class="bi bi-mic-mute"></i> VOZ GUÍA: OFF' : '<i class="bi bi-mic-fill"></i> VOZ GUÍA: ON';
+                        btnGuia.className = audioGuia.muted ? 'btn btn-outline-secondary fw-bold' : 'btn btn-warning fw-bold';
+                    };
+
+                    // 3. SINCRONIZACIÓN FLUIDA (Sin entrecortar)
+                    audioGuia.onplay = () => {
+                        if (!introMostrada && audioGuia.currentTime < 1) {
+                            audioGuia.pause();
+                            audioInst.pause();
+                            intro.classList.remove('d-none');
+                            introMostrada = true;
+                            let cuenta = 10;
+
+                            let timer = setInterval(() => {
+                                cuenta--;
+                                numCuenta.innerText = cuenta;
+                                if (cuenta <= 3 && cuenta > 0) {
+                                    numCuenta.classList.add('text-danger');
+                                    msgPrep.classList.remove('d-none');
+                                }
+                                if (cuenta <= 0) {
+                                    clearInterval(timer);
+                                    intro.style.opacity = '0';
+                                    setTimeout(() => {
+                                        intro.classList.add('d-none');
+                                        audioGuia.currentTime = 0;
+                                        audioInst.currentTime = 0;
+                                        // Play simultáneo
+                                        audioGuia.play();
+                                        audioInst.play();
+                                    }, 500);
+                                }
+                            }, 1000);
+                        } else {
+                            // Si ya empezó, solo igualamos y damos play
+                            audioInst.currentTime = audioGuia.currentTime;
+                            audioInst.play();
+                        }
+                    };
+
+                    // Eventos espejo (Solo cuando son estrictamente necesarios)
+                    audioGuia.onpause = () => audioInst.pause();
+                    audioGuia.onseeking = () => audioInst.currentTime = audioGuia.currentTime;
+                    audioGuia.onratechange = () => audioInst.playbackRate = audioGuia.playbackRate;
+
+                    // 4. MOTOR DE RENDERIZADO (Solo visual)
+                    function engine() {
+                        const now = audioGuia.currentTime;
+                        const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i + 1] || now < letras[i + 1].time));
+
+                        if (idx !== -1) {
+                            const linea = letras[idx];
+                            if (displayActual.dataset.index != idx) {
+                                displayActual.innerHTML = '';
+                                linea.words.forEach((w, i) => {
+                                    const s = document.createElement('span');
+                                    s.className = 'palabra';
+                                    s.innerText = w.text + ' ';
+                                    s.id = `w-${i}`;
+                                    displayActual.appendChild(s);
+                                });
+                                displayActual.dataset.index = idx;
+                                const sig = letras[idx + 1];
+                                displaySiguiente.innerText = sig ? sig.words.map(w => w.text).join(' ') : '';
+                            }
+                            linea.words.forEach((w, i) => {
+                                const el = document.getElementById(`w-${i}`);
+                                if (!el) return;
+                                if (now >= w.end) {
+                                    el.style.setProperty('--progress', '100%');
+                                    el.classList.add('pasada');
+                                    el.classList.remove('activa');
+                                } else if (now >= w.start) {
+                                    const p = ((now - w.start) / (w.end - w.start)) * 100;
+                                    el.style.setProperty('--progress', `${p}%`);
+                                    el.classList.add('activa');
+                                }
+                            });
+                        }
+                        requestAnimationFrame(engine);
+                    }
+
+                    function parsearLRC(lrc) {
+                        const res = [];
+                        const lines = lrc.split('\n');
+                        const lineRegex = /\[(\d+):(\d+\.\d+)\](.*)/;
+                        const wordRegex = /<(\d+):(\d+\.\d+)>/g;
+                        lines.forEach((line) => {
+                            const mL = line.match(lineRegex);
+                            if (mL) {
+                                const timeL = parseInt(mL[1]) * 60 + parseFloat(mL[2]);
+                                const content = mL[3].trim();
+                                const textParts = content.split(/<\d+:\d+\.\d+>/);
+                                const innerTimes = [];
+                                let mWT;
+                                while ((mWT = wordRegex.exec(content)) !== null) {
+                                    innerTimes.push(parseInt(mWT[1]) * 60 + parseFloat(mWT[2]));
+                                }
+                                let words = [];
+                                if (textParts[0].trim() !== "") words.push({
+                                    start: timeL,
+                                    text: textParts[0].trim()
+                                });
+                                for (let i = 0; i < innerTimes.length; i++) {
+                                    if (textParts[i + 1] && textParts[i + 1].trim() !== "") {
+                                        words.push({
+                                            start: innerTimes[i],
+                                            text: textParts[i + 1].trim()
+                                        });
+                                    }
+                                }
+                                for (let i = 0; i < words.length; i++) {
+                                    if (words[i + 1]) words[i].end = words[i + 1].start;
+                                    else words[i].end = words[i].start + 1.5;
+                                }
+                                if (words.length > 0) res.push({
+                                    time: timeL,
+                                    words
+                                });
+                            }
+                        });
+                        return res;
+                    }
+                })();
+        <?php endif; ?>
+
+        // Buscador y Fullscreen
         document.getElementById('inputBusqueda')?.addEventListener('input', function() {
             let t = this.value.toLowerCase().trim();
             document.querySelectorAll('.item-cancion').forEach(i => {
-                let match = i.dataset.titulo.includes(t) || i.dataset.artista.includes(t) || i.dataset.estilo.includes(t);
-                i.classList.toggle('d-none', !match); i.classList.toggle('d-flex', match);
+                let match = i.dataset.titulo.includes(t) || i.dataset.artista.includes(t);
+                i.classList.toggle('d-none', !match);
+                i.classList.toggle('d-flex', match);
             });
         });
 
-        // --- FULLSCREEN (REINSTAURADO) ---
         document.getElementById('btnFullscreen')?.addEventListener('click', () => {
             const p = document.getElementById('pantalla-karaoke');
             if (p.requestFullscreen) p.requestFullscreen();
             else if (p.webkitRequestFullscreen) p.webkitRequestFullscreen();
-            else if (p.msRequestFullscreen) p.msRequestFullscreen();
         });
 
-        // --- MOTOR DE KARAOKE E INTRO ---
-        <?php if ($cancion_actual) : ?>
-        (function() {
-            const audio = document.getElementById('videoKaraoke');
-            const intro = document.getElementById('karaoke-intro');
-            const numCuenta = document.getElementById('numero-cuenta');
-            const msgPrep = document.getElementById('mensaje-preparate');
-            const displayActual = document.getElementById('linea-actual');
-            const displaySiguiente = document.getElementById('linea-siguiente');
-            
-            let letras = [];
-            let introMostrada = false;
-
-            // Cargar Letras
-            fetch("../<?= $cancion_actual['letra'] ?>").then(r => r.text()).then(data => { 
-                letras = parsearLRC(data); 
-                requestAnimationFrame(engine); 
-            });
-
-            // Lógica de Intro
-            audio.onplay = function() {
-                if (!introMostrada && audio.currentTime < 1) {
-                    audio.pause();
-                    intro.classList.remove('d-none');
-                    introMostrada = true;
-                    let cuenta = 10;
-                    let timer = setInterval(() => {
-                        cuenta--;
-                        numCuenta.innerText = cuenta;
-                        if (cuenta <= 3 && cuenta > 0) {
-                            numCuenta.classList.add('text-danger');
-                            msgPrep.classList.remove('d-none');
-                        }
-                        if (cuenta <= 0) {
-                            clearInterval(timer);
-                            intro.style.opacity = '0';
-                            setTimeout(() => { intro.classList.add('d-none'); audio.play(); }, 500);
-                        }
-                    }, 1000);
-                }
-            };
-
-            function parsearLRC(lrc) {
-                const res = [];
-                const lines = lrc.split('\n');
-                const lineRegex = /\[(\d+):(\d+\.\d+)\](.*)/;
-                const wordRegex = /<(\d+):(\d+\.\d+)>/g;
-
-                lines.forEach((line, idx) => {
-                    const mL = line.match(lineRegex);
-                    if (mL) {
-                        const timeL = parseInt(mL[1]) * 60 + parseFloat(mL[2]);
-                        const content = mL[3].trim();
-                        const textParts = content.split(/<\d+:\d+\.\d+>/);
-                        const innerTimes = [];
-                        let mWT;
-                        while ((mWT = wordRegex.exec(content)) !== null) {
-                            innerTimes.push(parseInt(mWT[1]) * 60 + parseFloat(mWT[2]));
-                        }
-                        let words = [];
-                        if (textParts[0].trim() !== "") words.push({ start: timeL, text: textParts[0].trim() });
-                        for (let i = 0; i < innerTimes.length; i++) {
-                            if (textParts[i+1] && textParts[i+1].trim() !== "") {
-                                words.push({ start: innerTimes[i], text: textParts[i+1].trim() });
-                            }
-                        }
-                        for (let i = 0; i < words.length; i++) {
-                            if (words[i+1]) words[i].end = words[i+1].start;
-                            else {
-                                const nextL = lines[idx+1]?.match(lineRegex);
-                                words[i].end = nextL ? Math.min(words[i].start + 1.5, parseInt(nextL[1])*60 + parseFloat(nextL[2])) : words[i].start + 1.5;
-                            }
-                        }
-                        if (words.length > 0) res.push({ time: timeL, words });
-                    }
-                });
-                return res;
-            }
-
-            function engine() {
-                const now = audio.currentTime;
-                const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i+1] || now < letras[i+1].time));
-                if (idx !== -1) {
-                    const linea = letras[idx];
-                    if (displayActual.dataset.index != idx) {
-                        displayActual.innerHTML = '';
-                        linea.words.forEach((w, i) => {
-                            const s = document.createElement('span');
-                            s.className = 'palabra'; s.innerText = w.text + ' '; s.id = `w-${i}`;
-                            displayActual.appendChild(s);
-                        });
-                        displayActual.dataset.index = idx;
-                        const sig = letras[idx+1];
-                        displaySiguiente.innerText = sig ? sig.words.map(w => w.text).join(' ') : '';
-                    }
-                    linea.words.forEach((w, i) => {
-                        const el = document.getElementById(`w-${i}`);
-                        if (!el) return;
-                        if (now >= w.end) { el.style.setProperty('--progress', '100%'); el.classList.add('pasada'); el.classList.remove('activa'); }
-                        else if (now >= w.start && now < w.end) {
-                            const p = ((now - w.start) / (w.end - w.start)) * 100;
-                            el.style.setProperty('--progress', `${p}%`);
-                            el.classList.add('activa'); el.classList.remove('pasada');
-                        } else { el.style.setProperty('--progress', '0%'); el.classList.remove('activa', 'pasada'); }
-                    });
-                }
-                requestAnimationFrame(engine);
-            }
-        })();
-        <?php endif; ?>
-
-        // Pestaña cola auto si venimos de mover
         if (window.location.search.includes("cola=1")) {
-            new bootstrap.Tab(document.querySelector('[data-bs-target="#tab-cola"]')).show();
+            const tabTrigger = document.querySelector('[data-bs-target="#tab-cola"]');
+            if (tabTrigger) new bootstrap.Tab(tabTrigger).show();
         }
     </script>
 </body>
+
 </html>
