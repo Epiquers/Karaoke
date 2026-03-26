@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-03-2026 a las 02:04:26
+-- Tiempo de generación: 26-03-2026 a las 22:40:31
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `karaoke`
 --
-DROP DATABASE IF EXISTS `karaoke`;
 CREATE DATABASE IF NOT EXISTS `karaoke` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 USE `karaoke`;
 
@@ -36,7 +35,8 @@ CREATE TABLE `canciones` (
   `titulo` varchar(200) NOT NULL,
   `artista` varchar(100) NOT NULL,
   `estilo` varchar(100) NOT NULL,
-  `cancion` varchar(255) NOT NULL,
+  `voz` varchar(255) NOT NULL,
+  `instrumental` varchar(255) NOT NULL,
   `letra` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -44,12 +44,12 @@ CREATE TABLE `canciones` (
 -- Volcado de datos para la tabla `canciones`
 --
 
-INSERT INTO `canciones` (`id`, `titulo`, `artista`, `estilo`, `cancion`, `letra`) VALUES
-(1, 'Bohemian Rhapsody', 'Queen', 'Rock', 'videos/bohemian.mp4', ''),
-(2, 'Imagine', 'John Lennon', '', 'videos/imagine.mp4', ''),
-(3, 'Sweet Child O Mine', 'Guns N Roses', '', 'videos/sweet.mp4', ''),
-(4, 'Hotel California', 'Eagles', '', 'videos/hotel.mp4', ''),
-(10, 'Profetas de la mañana', 'Vetusta Morla', 'Indie', 'uploads/canciones/Profetas_de_la_mañana_53.mp3', 'uploads/letras/Profetas_de_la_mañana_53..lrc');
+INSERT INTO `canciones` (`id`, `titulo`, `artista`, `estilo`, `voz`, `instrumental`, `letra`) VALUES
+(18, 'Un plan mejor', 'Vetusta Morla', 'Indie', 'uploads/canciones/Vetusta_Morla/Un_plan_mejor_(voz)_32.mp3', 'uploads/canciones/Vetusta_Morla/Un_plan_mejor_(instrumental)_32.mp3', 'uploads/letras/Vetusta_Morla/Un_plan_mejor_32.lrc'),
+(19, 'Profetas de la mañana', 'Vetusta Morla', 'Indie', 'uploads/canciones/Vetusta_Morla/Profetas_de_la_maana_(voz)_05.mp3', 'uploads/canciones/Vetusta_Morla/Profetas_de_la_maana_(instrumental)_05.mp3', 'uploads/letras/Vetusta_Morla/Profetas_de_la_maana_05.lrc'),
+(20, 'Mercaderes de salud', 'Sok', 'Rock', 'uploads/canciones/Sok/Mercaderes_de_salud_(voz)_53.mp3', 'uploads/canciones/Sok/Mercaderes_de_salud_(instrumental)_53.mp3', 'uploads/letras/Sok/Mercaderes_de_salud_53.lrc'),
+(21, 'Viva la vida', 'Coldplay', 'Rock', 'uploads/canciones/Coldplay/Viva_la_vida_(voz)_41.mp3', 'uploads/canciones/Coldplay/Viva_la_vida_(instrumental)_41.mp3', 'uploads/letras/Coldplay/Viva_la_vida_41.lrc'),
+(22, 'All of me', 'John Legend', 'Jazz', 'uploads/canciones/John_Legend/All_of_me_(voz)_21.mp3', 'uploads/canciones/John_Legend/All_of_me_(instrumental)_21.mp3', 'uploads/letras/John_Legend/All_of_me_21.lrc');
 
 -- --------------------------------------------------------
 
@@ -70,10 +70,8 @@ CREATE TABLE `cola` (
 --
 
 INSERT INTO `cola` (`id`, `id_usuario`, `id_cancion`, `cantante`) VALUES
-(15, 3, 4, ''),
-(16, 3, 4, ''),
-(27, 2, 2, ''),
-(45, 1, 10, 'Adrian');
+(96, 1, 18, 'Adrian'),
+(98, 2, 18, 'Eduardo');
 
 -- --------------------------------------------------------
 
@@ -96,7 +94,8 @@ CREATE TABLE `peticiones` (
 --
 
 INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado`, `fechaHora`) VALUES
-(1, 3, 'Midnite', 'I am a Bushman', 0, '2026-03-25 22:26:50');
+(1, 3, 'Midnite', 'I am a Bushman', 0, '2026-03-26 21:39:28'),
+(2, 2, 'Dulce Pontes', 'Cancão Do Mar', 0, '2026-03-26 21:35:27');
 
 -- --------------------------------------------------------
 
@@ -164,19 +163,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `canciones`
 --
 ALTER TABLE `canciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT de la tabla `cola`
 --
 ALTER TABLE `cola`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT de la tabla `peticiones`
 --
 ALTER TABLE `peticiones`
-  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

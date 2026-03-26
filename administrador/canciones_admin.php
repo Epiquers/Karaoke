@@ -104,8 +104,11 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                     <option value="">Selecciona un estilo</option>
                                     <option value="Pop">Pop</option>
                                     <option value="Rock">Rock</option>
+                                    <option value="Pop/Rock">Pop/Rock</option>
+                                    <option value="Rock Alternativo">Rock Alternativo</option>
                                     <option value="Reggae">Reggae</option>
                                     <option value="Blues">Blues</option>
+                                    <option value="Jazz">Jazz</option>
                                     <option value="Rap">Rap</option>
                                     <option value="Indie">Indie</option>
                                 </select>
@@ -133,7 +136,6 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                     </small>
                 </div>
             </div>
-
             <div class="admin-list-panel p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="m-0 fw-bold">Gestión de Catálogo</h2>

@@ -234,7 +234,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                     <h2 class="h3 text-white"><?= $cancion_actual['titulo'] ?></h2>
                                     <p class="text-secondary italic"><?= $cancion_actual['artista'] ?></p>
                                     <div class="mt-4">
-                                        <div id="numero-cuenta" class="fw-bold text-white">10</div>
+                                        <div id="numero-cuenta" class="fw-bold text-white">5</div>
                                         <div id="mensaje-preparate" class="h2 text-danger fw-bold d-none">¡PREPÁRATE!</div>
                                     </div>
                                 </div>
@@ -314,7 +314,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             audioInst.pause();
                             intro.classList.remove('d-none');
                             introMostrada = true;
-                            let cuenta = 10;
+                            let cuenta = 5;
 
                             let timer = setInterval(() => {
                                 cuenta--;
@@ -333,7 +333,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                         // Play simultáneo
                                         audioGuia.play();
                                         audioInst.play();
-                                    }, 500);
+                                    }, 800);
                                 }
                             }, 1000);
                         } else {
