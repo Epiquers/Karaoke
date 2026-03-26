@@ -68,18 +68,18 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
         }
 
         #linea-actual { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; }
-        #linea-siguiente { font-size: 1.8rem; opacity: 0.3; color: #aaa; text-transform: uppercase; filter: blur(1px); }
+        #linea-siguiente { font-size: 1.8rem; opacity: 0.3; color: #ffb973; text-transform: uppercase; filter: blur(1px); }
 
         /* --- RELLENO PROGRESIVO --- */
         .palabra {
             display: inline-block;
-            margin: 0 10px;
-            background-image: linear-gradient(to right, #fff var(--progress, 0%), rgba(255,255,255,0.2) var(--progress, 0%));
+            margin: 0 20px;
+            background-image: linear-gradient(to right, #b3ff01 var(--progress, 0%), rgba(255,255,255,0.2) var(--progress, 0%));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             transition: transform 0.2s ease;
         }
-        .palabra.activa { transform: scale(1.15); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+        .palabra.activa { transform: scale(1.18); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
         .palabra.pasada { background-image: linear-gradient(to right, #666 100%, #666 100%); opacity: 0.5; }
 
         /* --- OVERLAY INTRO --- */
