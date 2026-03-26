@@ -200,3 +200,15 @@ a:hover {
   color: #cdd1da;
   font-size: 0.95em;
 }
+
+#pantalla-karaoke {
+    transition: all 0.5s ease;
+}
+
+#lyric-content {
+    transition: opacity 0.2s ease-in-out;
+    text-shadow: 0 0 15px rgba(255, 193, 7, 0.5); /* Brillo amarillo */
+    font-family: 'Arial Black', sans-serif;
+    text-transform: uppercase;
+}
+
