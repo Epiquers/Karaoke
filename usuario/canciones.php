@@ -124,7 +124,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                             <p class="mb-0 text-secondary smaller text-truncate"><?= $row['artista'] ?></p>
                                         </div>
                                         <form action="cancion_añadir.php" method="POST" class="ms-2 d-flex flex-column gap-1">
-                                            <input type="text" name="cantante" class="form-control form-control-sm bg-dark border-secondary text-white" placeholder="¿Quién?" style="font-size: 0.7rem; max-width: 80px;" required>
+                                            <input type="text" name="cantante" class="form-control form-control-sm bg-dark border-secondary text-white" placeholder="¿Quién canta?" style="font-size: 0.7rem; max-width: 80px;" required>
                                             <input type="hidden" name="idCancion" value="<?= $row['id'] ?>">
                                             <button type="submit" class="btn btn-main btn-sm w-100" style="font-size: 0.7rem;">Añadir</button>
                                         </form>
