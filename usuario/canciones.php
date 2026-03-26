@@ -433,7 +433,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
         document.getElementById('inputBusqueda')?.addEventListener('input', function() {
             let t = this.value.toLowerCase().trim();
             document.querySelectorAll('.item-cancion').forEach(i => {
-                let match = i.dataset.titulo.includes(t) || i.dataset.artista.includes(t);
+                let match = i.dataset.titulo.includes(t) || i.dataset.artista.includes(t) || i.dataset.estilo.includes(t);
                 i.classList.toggle('d-none', !match);
                 i.classList.toggle('d-flex', match);
             });
