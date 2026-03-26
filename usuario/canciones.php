@@ -254,15 +254,16 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             </audio>
 
                             <div class="d-flex justify-content-center align-items-center gap-3 mt-3">
-                                <button id="btnGuia" class="btn btn-warning fw-bold">
-                                    <i class="bi bi-mic-fill"></i> VOZ GUÍA: ON
+                                <button id="btnGuia" class="btn btn-outline-success">
+                                    <i class="bi bi-mic-fill"></i> VOZ: ON
                                 </button>
 
                                 <form action="" method="POST">
-                                    <button name="siguiente" class="btn btn-main px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
+                                    <button name="siguiente" class="btn btn-outline-warning px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
                                 </form>
 
                                 <button id="btnFullscreen" class="btn btn-outline-light"><i class="bi bi-fullscreen"></i></button>
+                                <button id="btn-abrir-escenario" class="btn-control btn btn-outline-primary"><i class="bi bi-exclamation-circle me-2"></i>Escenario</button>
                             </div>
                         </div>
                     </div>
@@ -303,8 +304,8 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                     // 2. CONTROL VOZ GUÍA
                     btnGuia.onclick = () => {
                         audioGuia.muted = !audioGuia.muted;
-                        btnGuia.innerHTML = audioGuia.muted ? '<i class="bi bi-mic-mute"></i> VOZ GUÍA: OFF' : '<i class="bi bi-mic-fill"></i> VOZ GUÍA: ON';
-                        btnGuia.className = audioGuia.muted ? 'btn btn-outline-secondary fw-bold' : 'btn btn-warning fw-bold';
+                        btnGuia.innerHTML = audioGuia.muted ? '<i class="bi bi-mic-mute"></i> VOZ: OFF' : '<i class="bi bi-mic-fill"></i> VOZ: ON';
+                        btnGuia.className = audioGuia.muted ? 'btn btn-outline-danger' : 'btn btn-outline-success';
                     };
 
                     // 3. SINCRONIZACIÓN FLUIDA (Sin entrecortar)
@@ -348,6 +349,62 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                     audioGuia.onseeking = () => audioInst.currentTime = audioGuia.currentTime;
                     audioGuia.onratechange = () => audioInst.playbackRate = audioGuia.playbackRate;
 
+                    let ventanaEscenario = null;
+
+                    // Esperamos a que el DOM esté cargado para asignar el botón
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const boton = document.getElementById('btn-abrir-escenario');
+                        if (boton) {
+                            boton.addEventListener('click', abrirEscenario);
+                        }
+                    });
+
+                    function abrirEscenario() {
+                        console.log("Intentando abrir ventana...");
+
+                        // Intentar abrir la ventana
+                        ventanaEscenario = window.open("", "Escenario", "width=1200,height=800");
+
+                        if (!ventanaEscenario) {
+                            alert("¡Bloqueador de pop-ups detectado! Por favor, permite las ventanas emergentes para esta página.");
+                            return;
+                        }
+
+                        const doc = ventanaEscenario.document;
+
+                        // Limpieza inicial
+                        doc.open();
+                        doc.write('<html><head><title>Escenario</title></head><body style="background:black; margin:0; overflow:hidden;"></body></html>');
+                        doc.close();
+
+                        // Inyectar estilos de la ventana principal
+                        const estilos = document.querySelectorAll('style, link[rel="stylesheet"]');
+                        estilos.forEach(estilo => {
+                            doc.head.appendChild(estilo.cloneNode(true));
+                        });
+
+                        // Crear la estructura de la pantalla
+                        const container = doc.createElement('div');
+                        container.style.cssText = "width: 100%; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; font-family: sans-serif;";
+
+                        const lineaActual = doc.createElement('div');
+                        lineaActual.id = "linea-actual-esc";
+                        lineaActual.className = "linea-karaoke";
+                        lineaActual.style.fontSize = "4rem";
+
+                        const lineaSiguiente = doc.createElement('div');
+                        lineaSiguiente.id = "linea-siguiente-esc";
+                        lineaSiguiente.className = "linea-siguiente";
+                        lineaSiguiente.style.fontSize = "2rem";
+                        lineaSiguiente.style.opacity = "0.5";
+
+                        container.appendChild(lineaActual);
+                        container.appendChild(lineaSiguiente);
+                        doc.body.appendChild(container);
+
+                        console.log("Ventana de escenario lista.");
+                    }
+
                     // 4. MOTOR DE RENDERIZADO (Solo visual)
                     function engine() {
                         const now = audioGuia.currentTime;
@@ -382,8 +439,26 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                 }
                             });
                         }
+
+                        if (ventanaEscenario && !ventanaEscenario.closed) {
+                            // Obtenemos los elementos de la ventana externa
+                            const escActual = ventanaEscenario.document.getElementById('linea-actual-esc');
+                            const escSiguiente = ventanaEscenario.document.getElementById('linea-siguiente-esc');
+
+                            if (escActual) {
+                                // Clonamos el contenido exacto (incluyendo spans y colores)
+                                escActual.innerHTML = document.getElementById('linea-actual').innerHTML;
+                            }
+                            if (escSiguiente) {
+                                escSiguiente.innerHTML = document.getElementById('linea-siguiente').innerHTML;
+                            }
+                        }
+
+
                         requestAnimationFrame(engine);
                     }
+
+
 
                     function parsearLRC(lrc) {
                         const res = [];
