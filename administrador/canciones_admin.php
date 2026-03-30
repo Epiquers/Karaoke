@@ -111,6 +111,12 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                     <option value="Jazz">Jazz</option>
                                     <option value="Rap">Rap</option>
                                     <option value="Indie">Indie</option>
+                                    <option value="Bachata">Bachata</option>
+                                    <option value="Salsa">Salsa</option>
+                                    <option value="Merengue">Merengue</option>
+                                    <option value="Cumbia">Cumbia</option>
+                                    <option value="Flamenco">Flamenco</option>
+                                    <option value="Balada">Balada</option>
                                 </select>
                             </div>
                             <div class="mb-4">

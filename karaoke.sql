@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-03-2026 a las 22:40:31
+-- Tiempo de generación: 30-03-2026 a las 22:30:02
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -49,7 +49,11 @@ INSERT INTO `canciones` (`id`, `titulo`, `artista`, `estilo`, `voz`, `instrument
 (19, 'Profetas de la mañana', 'Vetusta Morla', 'Indie', 'uploads/canciones/Vetusta_Morla/Profetas_de_la_maana_(voz)_05.mp3', 'uploads/canciones/Vetusta_Morla/Profetas_de_la_maana_(instrumental)_05.mp3', 'uploads/letras/Vetusta_Morla/Profetas_de_la_maana_05.lrc'),
 (20, 'Mercaderes de salud', 'Sok', 'Rock', 'uploads/canciones/Sok/Mercaderes_de_salud_(voz)_53.mp3', 'uploads/canciones/Sok/Mercaderes_de_salud_(instrumental)_53.mp3', 'uploads/letras/Sok/Mercaderes_de_salud_53.lrc'),
 (21, 'Viva la vida', 'Coldplay', 'Rock', 'uploads/canciones/Coldplay/Viva_la_vida_(voz)_41.mp3', 'uploads/canciones/Coldplay/Viva_la_vida_(instrumental)_41.mp3', 'uploads/letras/Coldplay/Viva_la_vida_41.lrc'),
-(22, 'All of me', 'John Legend', 'Jazz', 'uploads/canciones/John_Legend/All_of_me_(voz)_21.mp3', 'uploads/canciones/John_Legend/All_of_me_(instrumental)_21.mp3', 'uploads/letras/John_Legend/All_of_me_21.lrc');
+(22, 'All of me', 'John Legend', 'Jazz', 'uploads/canciones/John_Legend/All_of_me_(voz)_21.mp3', 'uploads/canciones/John_Legend/All_of_me_(instrumental)_21.mp3', 'uploads/letras/John_Legend/All_of_me_21.lrc'),
+(23, 'La Vereda de la Puerta de Atrás', 'Extremoduro', 'Rock', 'uploads/canciones/Extremoduro/La_Vereda_de_la_Puerta_de_Atrs_(voz)_26.mp3', 'uploads/canciones/Extremoduro/La_Vereda_de_la_Puerta_de_Atrs_(instrumental)_26.mp3', 'uploads/letras/Extremoduro/La_Vereda_de_la_Puerta_de_Atrs_26.lrc'),
+(24, '19 días y 500 noches', 'Joaquín Sabina', 'Rock', 'uploads/canciones/Joaqun_Sabina/19_das_y_500_noches_(voz)_59.mp3', 'uploads/canciones/Joaqun_Sabina/19_das_y_500_noches_(instrumental)_59.mp3', 'uploads/letras/Joaqun_Sabina/19_das_y_500_noches_59.lrc'),
+(25, 'Zafar', 'La Vela Puerca', 'Rock', 'uploads/canciones/La_Vela_Puerca/Zafar_(voz)_19.mp3', 'uploads/canciones/La_Vela_Puerca/Zafar_(instrumental)_19.mp3', 'uploads/letras/La_Vela_Puerca/Zafar_19.lrc'),
+(26, 'Vale la Pena', 'Juan Luis Guerra', 'Pop', 'uploads/canciones/Juan_Luis_Guerra/Vale_la_Pena_(voz)_29.mp3', 'uploads/canciones/Juan_Luis_Guerra/Vale_la_Pena_(instrumental)_29.mp3', 'uploads/letras/Juan_Luis_Guerra/Vale_la_Pena_29.lrc');
 
 -- --------------------------------------------------------
 
@@ -70,8 +74,11 @@ CREATE TABLE `cola` (
 --
 
 INSERT INTO `cola` (`id`, `id_usuario`, `id_cancion`, `cantante`) VALUES
-(96, 1, 18, 'Adrian'),
-(98, 2, 18, 'Eduardo');
+(96, 1, 26, 'Edu'),
+(98, 2, 18, 'Eduardo'),
+(99, 1, 18, 'Adrian'),
+(100, 1, 25, 'Edu'),
+(101, 1, 23, 'Edu');
 
 -- --------------------------------------------------------
 
@@ -163,13 +170,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `canciones`
 --
 ALTER TABLE `canciones`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `cola`
 --
 ALTER TABLE `cola`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT de la tabla `peticiones`
