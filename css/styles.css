@@ -189,6 +189,33 @@ a:hover {
             color: #dc3545;
         }
 
+/* ---------- RESPONSIVE: ADMIN ---------- */
+@media (max-width: 991.98px) {
+    .app-container {
+        height: auto !important;
+        min-height: 100vh;
+    }
+
+    .admin-main {
+        flex-direction: column !important;
+        overflow: visible !important;
+    }
+
+    .admin-form-panel {
+        width: 100% !important;
+        min-width: 0 !important;
+        flex-shrink: 0;
+        border-right: none !important;
+        border-bottom: 1px solid #333;
+        overflow-y: visible !important;
+    }
+
+    .admin-list-panel {
+        width: 100% !important;
+        overflow-y: visible !important;
+    }
+}
+
 /* ---------- PÁGINA CANCIONES (USUARIO) ---------- */
 
 .page-canciones {
