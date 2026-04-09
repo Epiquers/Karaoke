@@ -160,7 +160,6 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                                     <div class='ps-2'>
                                         <h6 class='mb-1 fw-bold text-warning'>" . $cancion['titulo'] . "</h6>
                                         <p class='mb-0 text-secondary small'>" . $cancion['artista'] . "</p>
-                                        <code class='text-muted smaller' style='font-size: 0.7rem;'>" . $cancion['voz'] . "</code>
                                     </div>
                                     <div class='pe-2'>
                                         <form method='POST' style='display:inline;' onsubmit=\"return confirm('¿Seguro que quieres eliminar esta canción?');\">

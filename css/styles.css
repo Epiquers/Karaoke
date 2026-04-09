@@ -219,7 +219,7 @@ a:hover {
 /* ---------- PÁGINA CANCIONES (USUARIO) ---------- */
 
 .page-canciones {
-    background-color: #000;
+    background: #000 !important;
 }
 
 .page-canciones input::placeholder,
@@ -228,13 +228,160 @@ a:hover {
   font-size: 0.95em;
 }
 
+/* --- KARAOKE / REPRODUCTOR --- */
+
 #pantalla-karaoke {
+    background: radial-gradient(circle, #212121 25%, #000 100%);
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #444;
+    border-radius: 15px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
     transition: all 0.5s ease;
+}
+
+.linea-karaoke {
+    min-height: 6rem;
+    margin: 10px 0;
+    text-align: center;
+    width: 100%;
+    transition: opacity 0.4s ease;
+    z-index: 10;
+}
+
+#linea-actual {
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+#linea-siguiente {
+    font-size: 1.8rem;
+    opacity: 0.3;
+    color: #ffb973;
+    text-transform: uppercase;
+    filter: blur(1px);
+}
+
+.palabra {
+    display: inline-block;
+    margin: 0 20px;
+    background-image: linear-gradient(to right, #b3ff01 var(--progress, 0%), rgba(255, 255, 255, 0.2) var(--progress, 0%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: transform 0.2s ease;
+}
+
+.palabra.activa {
+    transform: scale(1.10);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.palabra.pasada {
+    background-image: linear-gradient(to right, #666 100%, #666 100%);
+    opacity: 0.5;
+}
+
+#karaoke-intro {
+    transition: opacity 0.5s ease;
+    background: rgba(0, 0, 0, 0.95) !important;
+}
+
+#numero-cuenta {
+    font-size: 9rem;
+    text-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
+}
+
+/* --- CONTROLES DEL REPRODUCTOR --- */
+
+audio#videoKaraoke {
+    color-scheme: dark;
+    border-radius: 50px;
+    border: 1px solid #333 !important;
+    background: #151515 !important;
+    filter: grayscale(0.3) brightness(0.85);
+}
+
+audio#videoKaraoke::-webkit-media-controls-panel {
+    background: #151515 !important;
+}
+
+.controles-player {
+    background: #151515;
+    border: 1px solid #333;
+    border-radius: 50px;
+    padding: 10px 25px;
+}
+
+.controles-player .btn {
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 6px 16px;
+}
+
+.btn-player-voz {
+    background: transparent !important;
+    border: 1px solid #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.btn-player-voz:hover {
+    background: #dc3545 !important;
+    color: #fff !important;
+}
+
+.btn-player-voz.activo {
+    background: #dc3545 !important;
+    color: #fff !important;
+}
+
+.btn-player-siguiente {
+    background: #dc3545 !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+.btn-player-siguiente:hover {
+    background: #bb2d3b !important;
+    color: #fff !important;
+}
+
+.btn-player-sec {
+    background: transparent !important;
+    border: 1px solid #444 !important;
+    color: #aaa !important;
+}
+
+.btn-player-sec:hover {
+    border-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.animate-intro {
+    animation: zoomIn 0.6s ease-out;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 #lyric-content {
     transition: opacity 0.2s ease-in-out;
-    text-shadow: 0 0 15px rgba(255, 193, 7, 0.5); /* Brillo amarillo */
+    text-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
     font-family: 'Arial Black', sans-serif;
     text-transform: uppercase;
 }

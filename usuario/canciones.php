@@ -41,91 +41,6 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
-    <style>
-        /* --- TUS ESTILOS ORIGINALES --- */
-        #pantalla-karaoke {
-            background: radial-gradient(circle, #212121 25%, #000 100%);
-            min-height: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #444;
-            border-radius: 15px;
-            padding: 40px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-        }
-
-        .linea-karaoke {
-            min-height: 6rem;
-            margin: 10px 0;
-            text-align: center;
-            width: 100%;
-            transition: opacity 0.4s ease;
-            z-index: 10;
-        }
-
-        #linea-actual {
-            font-size: 3.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        #linea-siguiente {
-            font-size: 1.8rem;
-            opacity: 0.3;
-            color: #ffb973;
-            text-transform: uppercase;
-            filter: blur(1px);
-        }
-
-        .palabra {
-            display: inline-block;
-            margin: 0 20px;
-            background-image: linear-gradient(to right, #b3ff01 var(--progress, 0%), rgba(255, 255, 255, 0.2) var(--progress, 0%));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: transform 0.2s ease;
-        }
-
-        .palabra.activa {
-            transform: scale(1.10);
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
-        }
-
-        .palabra.pasada {
-            background-image: linear-gradient(to right, #666 100%, #666 100%);
-            opacity: 0.5;
-        }
-
-        #karaoke-intro {
-            transition: opacity 0.5s ease;
-            background: rgba(0, 0, 0, 0.95) !important;
-        }
-
-        #numero-cuenta {
-            font-size: 9rem;
-            text-shadow: 0 0 30px rgba(255, 193, 7, 0.4);
-        }
-
-        .animate-intro {
-            animation: zoomIn 0.6s ease-out;
-        }
-
-        @keyframes zoomIn {
-            from {
-                transform: scale(0.5);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-    </style>
 </head>
 
 <body class="text-light page-canciones">
@@ -249,15 +164,15 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                 <source src="<?= "../" . $cancion_actual['instrumental'] ?>" type="audio/mpeg">
                             </audio>
 
-                            <div class="d-flex justify-content-center align-items-center gap-3 mt-3">
-                                <button id="btnGuia" class="btn btn-outline-success">
+                            <div class="controles-player d-flex justify-content-center align-items-center gap-3 mt-3">
+                                <button id="btnGuia" class="btn btn-player-voz activo">
                                     <i class="bi bi-mic-fill"></i> VOZ: ON
                                 </button>
                                 <form action="" method="POST">
-                                    <button name="siguiente" class="btn btn-outline-warning px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
+                                    <button name="siguiente" class="btn btn-player-siguiente px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
                                 </form>
-                                <button id="btnFullscreen" class="btn btn-outline-light"><i class="bi bi-fullscreen"></i></button>
-                                <button id="btn-abrir-escenario" class="btn btn-outline-primary"><i class="bi bi-exclamation-circle me-2"></i>Escenario</button>
+                                <button id="btnFullscreen" class="btn btn-player-sec"><i class="bi bi-fullscreen"></i></button>
+                                <button id="btn-abrir-escenario" class="btn btn-player-sec"><i class="bi bi-tv me-2"></i>Escenario</button>
                             </div>
                         </div>
                     </div>
@@ -328,7 +243,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                     btnGuia.onclick = () => {
                         audioGuia.muted = !audioGuia.muted;
                         btnGuia.innerHTML = audioGuia.muted ? '<i class="bi bi-mic-mute"></i> VOZ: OFF' : '<i class="bi bi-mic-fill"></i> VOZ: ON';
-                        btnGuia.className = audioGuia.muted ? 'btn btn-outline-danger' : 'btn btn-outline-success';
+                        btnGuia.className = audioGuia.muted ? 'btn btn-player-voz' : 'btn btn-player-voz activo';
                     };
 
                     audioGuia.onplay = () => {
