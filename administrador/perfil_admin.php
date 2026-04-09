@@ -93,7 +93,7 @@ if (isset($_POST['accion_estado'])) {
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Email</th>
-                        <th>Password</th>
+                        <th class="d-none d-sm-table-cell">Password</th>
                         <th class="text-end">Acciones</th>
                     </tr>
                 </thead>
@@ -116,7 +116,7 @@ if (isset($_POST['accion_estado'])) {
                             <td><strong><?php echo $row['nombre']; ?></strong></td>
                             <td class="text-secondary"><?php echo $row['email']; ?></td>
 
-                            <td class="text-secondary"><?php echo $row['passwd']; ?></td>
+                            <td class="text-secondary d-none d-sm-table-cell"><?php echo $row['passwd']; ?></td>
 
                             <td class="text-end">
 
