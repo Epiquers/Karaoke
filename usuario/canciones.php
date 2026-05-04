@@ -5,6 +5,43 @@ include 'seguridad_usuario.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 
+// Mover canción en la cola (subir o bajar)
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mover'])) {
+    $idUsuario = $_SESSION['idUsuario'];
+    $idActual = $_POST['idCola'];
+
+    // Recogemos el valor del botón "mover"
+    $direccion = $_POST['mover'];
+
+    $operador = ($direccion == 'subir') ? '<' : '>';
+    $orden = ($direccion == 'subir') ? 'DESC' : 'ASC';
+
+    $sql_vecino = "SELECT id FROM cola WHERE id_usuario = '$idUsuario' AND id $operador '$idActual' ORDER BY id $orden LIMIT 1";
+    $res_vecino = mysqli_query($conn, $sql_vecino);
+
+    if ($vecino = mysqli_fetch_assoc($res_vecino)) {
+        $idVecino = $vecino['id'];
+
+        mysqli_query($conn, "UPDATE cola SET id = 0 WHERE id = '$idActual'");
+        mysqli_query($conn, "UPDATE cola SET id = '$idActual' WHERE id = '$idVecino'");
+        mysqli_query($conn, "UPDATE cola SET id = '$idVecino' WHERE id = 0");
+    }
+    exit();
+}
+
+// Quitar canción de la cola
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCola'])) {
+    $idCola = $_POST['idCola'];
+    $idUsuario = $_SESSION['idUsuario'];
+
+    $consulta_quitar = "DELETE FROM cola WHERE id='$idCola'";
+    $result = mysqli_query($conn, $consulta_quitar);
+
+    // Cerramos conexion
+    mysqli_close($conn);
+    exit();
+}
+
 // PRIMERA canción de la cola
 $consulta_primeraCancion = "SELECT * FROM cola WHERE id_usuario = '$idUsuario' ORDER BY id ASC LIMIT 1";
 $result_primera = mysqli_query($conn, $consulta_primeraCancion);
@@ -102,18 +139,23 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                     $c = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM canciones WHERE id = '$idC'"));
                                     $esSonando = ($row['id'] == $id_colaPrimera);
                             ?>
-                                    <div class="d-flex justify-content-between align-items-center p-3 mb-2 <?= $esSonando ? 'border-start border-danger border-3 bg-danger bg-opacity-10' : 'card-dark' ?>">
+                                    <div class="d-flex justify-content-between align-items-center p-3 mb-2 <?= $esSonando ? 'border-start border-danger border-3 bg-danger bg-opacity-10' : 'card-dark' ?> item-cola">
                                         <div class="overflow-hidden">
                                             <h6 class="mb-1 fw-bold <?= $esSonando ? 'text-white' : 'text-warning' ?> text-truncate small"><?= $c['titulo'] ?></h6>
                                             <span class="badge bg-secondary opacity-75 mt-1" style="font-size: 0.7rem;"><i class="bi bi-person-fill me-1"></i><?= $row['cantante'] ?></span>
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
-                                            <form action="cancion_mover.php" method="POST" class="d-flex gap-1">
+                                            <form method="POST" class="form-mover">
                                                 <input type="hidden" name="idCola" value="<?= $row['id'] ?>">
-                                                <button type="submit" name="mover" value="subir" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-up-fill"></i></button>
-                                                <button type="submit" name="mover" value="bajar" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-down-fill"></i></button>
+                                                <input type="hidden" name="mover" value="subir">
+                                                <button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-up-fill"></i></button>
                                             </form>
-                                            <form action="cancion_quitar.php" method="POST">
+                                            <form method="POST" class="form-mover">
+                                                <input type="hidden" name="idCola" value="<?= $row['id'] ?>">
+                                                <input type="hidden" name="mover" value="bajar">
+                                                <button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-down-fill"></i></button>
+                                            </form>
+                                            <form method="POST" class="form-quitar">
                                                 <input type="hidden" name="idCola" value="<?= $row['id'] ?>">
                                                 <button type="submit" class="btn btn-link text-danger p-0"><i class="bi bi-trash"></i></button>
                                             </form>
@@ -398,6 +440,32 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
             const p = document.getElementById('pantalla-karaoke');
             if (p.requestFullscreen) p.requestFullscreen();
             else if (p.webkitRequestFullscreen) p.webkitRequestFullscreen();
+        });
+
+        // Borrar canción de la cola y actualizar interfaz sin recargar
+        document.querySelectorAll('.form-quitar').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // evita que el formulario recargue la página
+                this.closest('.item-cola').remove(); // quita el bloque de la canción del DOM
+                fetch('canciones.php', { method: 'POST', body: new FormData(this) }); // avisa al servidor para borrarla de la BD
+            });
+        });
+
+        // Mover canción en la cola y actualizar interfaz sin recargar
+        document.querySelectorAll('.form-mover').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // evita que el formulario recargue la página
+                let item = this.closest('.item-cola'); // bloque de la canción que queremos mover
+                let dir = this.querySelector('[name=mover]').value; // "subir" o "bajar", viene del input hidden
+                if (dir === 'subir') {
+                    let prev = item.previousElementSibling; // canción que está justo encima
+                    if (prev) item.parentNode.insertBefore(item, prev); // la coloca antes de esa
+                } else {
+                    let next = item.nextElementSibling; // canción que está justo debajo
+                    if (next) item.parentNode.insertBefore(next, item); // la coloca antes de la nuestra, efecto de bajar
+                }
+                fetch('canciones.php', { method: 'POST', body: new FormData(this) }); // avisa al servidor para actualizar el orden en la BD
+            });
         });
     </script>
 </body>
