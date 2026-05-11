@@ -221,13 +221,14 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                 <source src="<?= "../" . $cancion_actual['instrumental'] ?>" type="audio/mpeg">
                             </audio>
 
+                            <form id="form-siguiente" action="" method="POST" style="display:none">
+                                <input type="hidden" name="siguiente" value="1">
+                            </form>
                             <div class="controles-player d-flex justify-content-center align-items-center gap-3 mt-3">
                                 <button id="btnGuia" class="btn btn-player-voz activo">
                                     <i class="bi bi-mic-fill"></i> VOZ: ON
                                 </button>
-                                <form action="" method="POST">
-                                    <button name="siguiente" class="btn btn-player-siguiente px-4"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
-                                </form>
+                                <button type="button" class="btn btn-player-siguiente px-4" onclick="document.getElementById('form-siguiente').submit()"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
                                 <button id="btnFullscreen" class="btn btn-player-sec"><i class="bi bi-fullscreen"></i></button>
                                 <button id="btn-abrir-escenario" class="btn btn-player-sec"><i class="bi bi-tv me-2"></i>Escenario</button>
                             </div>
