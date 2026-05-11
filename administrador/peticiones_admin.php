@@ -2,6 +2,9 @@
 session_start();
 include("../includes/conexion.php");
 
+/** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
+
+
 // Cambiar estado de una petición
 if (isset($_POST['cambiar_estado'])) {
     $id_peticion = ($_POST['id_peticion']);

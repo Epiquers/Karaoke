@@ -1,16 +1,34 @@
-<?php
-$servidor="localhost";
-$user="root";
-$clave="";
-$basededatos="karaoke";
-//Establecimiento de la conexión al servidor localhost, 
-//con el usuario root y sin clave
-$conn= mysqli_connect($servidor,$user,$clave);
-//Seleccionamos la base de datos empresa
-mysqli_select_db($conn,$basededatos);
+conexión nueva 
 
-// Para evitar problemas con tildes y eñes
+<?php
+// Detectamos si el servidor es local o remoto
+$is_localhost = ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.0.1');
+
+if ($is_localhost) {
+    // --- CONFIGURACIÓN PARA EL PC (XAMPP) ---
+    $servidor = "localhost";
+    $user = "root";
+    $clave = "";
+    $basededatos = "karaoke";
+} else {
+    // --- CONFIGURACIÓN PARA EL SERVIDOR (cPanel) ---
+    $servidor = "localhost";           // En cPanel se mantiene localhost
+    $user = "adrianvi_user_kantabile"; // El usuario que creaste en cPanel
+    $clave = "Tu_Contraseña_Aqui";     // La contraseña que anotaste
+    $basededatos = "adrianvi_kantabile"; // El nombre de la BD en cPanel
+}
+
+// Intentamos la conexión
+$conn = mysqli_connect($servidor, $user, $clave, $basededatos);
+
+// Verificamos si hubo error de conexión
+if (!$conn) {
+    die("Error de conexión: " . mysqli_connect_error());
+}
+
+// Forzamos el set de caracteres para evitar problemas con tildes y eñes
 mysqli_set_charset($conn, "utf8mb4");
-//Imprimimos si hay algún error
-echo mysqli_error($conn);
+
+// Opcional: Para debug en desarrollo (puedes comentarlo luego)
+// if ($is_localhost) { echo "Conectado en LOCAL"; }
 ?>
