@@ -16,7 +16,7 @@ if (isset($_POST['cambiar_estado'])) {
 $consulta = "SELECT  p.id_peticion, p.usuario, u.nombre AS nombre_usuario, p.artista, p.titulo, p.estado, p.fechaHora
              FROM peticiones p, usuarios u
              WHERE p.usuario = u.id
-             ORDER BY p.fechaHora DESC";
+             ORDER BY p.estado ASC, p.fechaHora DESC";
 $resultado = mysqli_query($conn, $consulta);
 ?>
 <!DOCTYPE html>
