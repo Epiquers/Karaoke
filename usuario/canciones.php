@@ -116,14 +116,14 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         <div class="p-3">
                             <div class="input-group mb-3">
                                 <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-search"></i></span>
-                                <input type="text" id="inputBusqueda" class="form-control form-control-dark" placeholder="Buscar canción o artista...">
+                                <input type="text" id="inputBusqueda" class="form-control form-control-dark" placeholder="Buscar canción, artista o estilo...">
                             </div>
                             <div class="sidebar-scroll" id="listaCanciones">
                                 <?php while ($row = mysqli_fetch_assoc($resultado_canciones)) { ?>
                                     <div class="item-cancion d-flex justify-content-between align-items-center p-3 card-dark mb-2" data-titulo="<?= strtolower($row['titulo']) ?>" data-artista="<?= strtolower($row['artista']) ?>" data-estilo="<?= strtolower($row['estilo']) ?>">
                                         <div class="overflow-hidden">
-                                            <h6 class="mb-1 fw-bold text-warning text-truncate small"><?= $row['titulo'] ?></h6>
-                                            <p class="mb-0 text-secondary smaller text-truncate"><?= $row['artista'] ?></p>
+                                            <h6 class="mb-1 fw-bold text-warning text-truncate small"><?= $row['titulo'] ?> <span class="badge bg-secondary ms-2"><?= $row['estilo'] ?></span></h6>
+                                            <p class="mb-0 text-secondary smaller text-truncate"><?= $row['artista'] ?> </p>
                                         </div>
                                         <form action="canciones.php" method="POST" class="ms-2 d-flex flex-column gap-1 form-añadir">
                                             <input type="text" name="cantante" class="form-control form-control-sm bg-dark border-secondary text-white" placeholder="¿Quién canta?" style="font-size: 0.7rem; max-width: 80px;" required>
