@@ -5,6 +5,19 @@ include 'seguridad_usuario.php';
 
 $idUsuario = $_SESSION['idUsuario'];
 
+// Añadir canción a la cola
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCancion'])) {
+    $idCancion = $_POST['idCancion'];
+    $idUsuario = $_SESSION['idUsuario'];
+    $cantante = $_POST['cantante'];
+
+    $consulta_añadir = "INSERT INTO cola (id_usuario, id_cancion, cantante) VALUES ('$idUsuario', '$idCancion', '$cantante')";
+    $result = mysqli_query($conn, $consulta_añadir);
+
+    echo mysqli_insert_id($conn);
+    exit();
+}
+
 // Mover canción en la cola (subir o bajar)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mover'])) {
     $idUsuario = $_SESSION['idUsuario'];
@@ -36,9 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCola'])) {
 
     $consulta_quitar = "DELETE FROM cola WHERE id='$idCola'";
     $result = mysqli_query($conn, $consulta_quitar);
-
-    // Cerramos conexion
-    mysqli_close($conn);
     exit();
 }
 
@@ -110,7 +120,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                             <h6 class="mb-1 fw-bold text-warning text-truncate small"><?= $row['titulo'] ?></h6>
                                             <p class="mb-0 text-secondary smaller text-truncate"><?= $row['artista'] ?></p>
                                         </div>
-                                        <form action="cancion_añadir.php" method="POST" class="ms-2 d-flex flex-column gap-1">
+                                        <form action="canciones.php" method="POST" class="ms-2 d-flex flex-column gap-1 form-añadir">
                                             <input type="text" name="cantante" class="form-control form-control-sm bg-dark border-secondary text-white" placeholder="¿Quién canta?" style="font-size: 0.7rem; max-width: 80px;" required>
                                             <input type="hidden" name="idCancion" value="<?= $row['id'] ?>">
                                             <button type="submit" class="btn btn-main btn-sm w-100" style="font-size: 0.7rem;">Añadir</button>
@@ -440,6 +450,32 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
             const p = document.getElementById('pantalla-karaoke');
             if (p.requestFullscreen) p.requestFullscreen();
             else if (p.webkitRequestFullscreen) p.webkitRequestFullscreen();
+        });
+
+        // Añadir canción a la cola sin recargar la página
+        document.querySelectorAll('.form-añadir').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // evita que el formulario recargue la página
+                var titulo = this.closest('.item-cancion').querySelector('h6').innerText; // título de la canción del item de biblioteca
+                var cantante = this.querySelector('[name=cantante]').value; // nombre escrito en el input "¿Quién canta?"
+                fetch('canciones.php', { method: 'POST', body: new FormData(this) }) // envía los datos al servidor (idCancion + cantante)
+                    .then(r => r.text()) // recoge la respuesta: el nuevo id de la fila insertada en la tabla cola
+                    .then(id => {
+                        if (!document.getElementById('videoKaraoke')) { // si el reproductor no estaba visible (cola estaba vacía), recarga para mostrarlo
+                            location.reload();
+                            return;
+                        }
+                        var cola = document.querySelector('#tab-cola .sidebar-scroll'); // contenedor de la lista de la cola
+                        cola.querySelector('.text-muted')?.remove(); // si la cola estaba vacía, quita el mensaje "Cola vacía"
+                        var div = document.createElement('div'); // crea el bloque HTML del nuevo item
+                        div.className = 'd-flex justify-content-between align-items-center p-3 mb-2 card-dark item-cola'; // mismas clases que los items existentes
+                        div.innerHTML = `<div class="overflow-hidden"><h6 class="mb-1 fw-bold text-warning text-truncate small">${titulo}</h6><span class="badge bg-secondary opacity-75 mt-1" style="font-size:0.7rem"><i class="bi bi-person-fill me-1"></i>${cantante}</span></div><div class="d-flex align-items-center gap-2"><form method="POST" class="form-mover"><input type="hidden" name="idCola" value="${id.trim()}"><input type="hidden" name="mover" value="subir"><button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-up-fill"></i></button></form><form method="POST" class="form-mover"><input type="hidden" name="idCola" value="${id.trim()}"><input type="hidden" name="mover" value="bajar"><button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-down-fill"></i></button></form><form method="POST" class="form-quitar"><input type="hidden" name="idCola" value="${id.trim()}"><button type="submit" class="btn btn-link text-danger p-0"><i class="bi bi-trash"></i></button></form></div>`; // rellena el item con título, cantante y botones de subir/bajar/quitar
+                        div.querySelectorAll('.form-quitar').forEach(f => f.addEventListener('submit', function(e2) { e2.preventDefault(); this.closest('.item-cola').remove(); fetch('canciones.php', { method: 'POST', body: new FormData(this) }); })); // adjunta el evento de borrar al botón quitar del nuevo item
+                        div.querySelectorAll('.form-mover').forEach(f => f.addEventListener('submit', function(e2) { e2.preventDefault(); var item = this.closest('.item-cola'), dir = this.querySelector('[name=mover]').value, sib = dir === 'subir' ? item.previousElementSibling : item.nextElementSibling; if (sib) dir === 'subir' ? item.parentNode.insertBefore(item, sib) : item.parentNode.insertBefore(sib, item); fetch('canciones.php', { method: 'POST', body: new FormData(this) }); })); // adjunta el evento de mover a los botones subir/bajar del nuevo item
+                        cola.appendChild(div); // inserta el nuevo item al final de la cola
+                        this.querySelector('[name=cantante]').value = ''; // limpia el campo "¿Quién canta?"
+                    });
+            });
         });
 
         // Borrar canción de la cola y actualizar interfaz sin recargar
