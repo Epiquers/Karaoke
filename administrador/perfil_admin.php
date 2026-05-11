@@ -2,6 +2,7 @@
 session_start();
 include("../includes/conexion.php");
 
+/** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
 
 // LÓGICA DE ACTUALIZACIÓN COMPLETA (Formulario)
 if (isset($_POST['update_user'])) {

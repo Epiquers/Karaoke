@@ -2,6 +2,9 @@
 session_start();
 include '../includes/conexion.php';
 
+/** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Inserta la petición en la BD si el usuario está logueado y los campos llegan correctamente

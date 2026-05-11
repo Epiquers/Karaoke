@@ -1,36 +1,9 @@
 <?php
-/* session_start();
-include '../includes/conexion.php';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo'])) {
-
-    $titulo  = $_POST['titulo'];
-    $artista = $_POST['artista'];
-
-    // Datos del archivo
-    $nombre_original = $_FILES['archivo']['name'];
-    $ruta_temporal = $_FILES['archivo']['tmp_name'];
-
-    // Ruta final en el servidor
-    $ruta_final = '../videos/' . $nombre_original;
-
-    // Mover archivo subido a la carpeta videos (copy da error, por eso usamos move_uploaded_file que es más seguro)
-    if (move_uploaded_file($ruta_temporal, $ruta_final)) {
-
-        $sql = "INSERT INTO canciones (titulo, artista, archivo)
-                VALUES ('$titulo', '$artista', '$ruta_final')";
-
-        mysqli_query($conn, $sql);
-    }
-    mysqli_close($conn);
-}
-
-// Volver a la página del admin
-header('Location: canciones_admin.php');
-exit(); */
-
 session_start();
 include '../includes/conexion.php';
+
+/** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_voz'])) {
 
@@ -49,12 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_voz'])) {
     $dir_letras    = "../uploads/letras/" . $artista_folder;
 
     //creamos las carpetas si no existen (con permisos totales para evitar problemas al subir archivos)
-    // El 0777 es permisos totales, el 'true' permite crear carpetas anidadas
+    // El 0755 es permisos de lectura y ejecución para el propietario y lectura para el resto, el 'true' permite crear carpetas anidadas
     if (!is_dir($dir_canciones)) {
-        mkdir($dir_canciones, 0777, true);
+        mkdir($dir_canciones, 0755, true);
     }
     if (!is_dir($dir_letras)) {
-        mkdir($dir_letras, 0777, true);
+        mkdir($dir_letras, 0755, true);
     }
 
     //Obtenemos la extensión original de los archivos (mp4, mp3, lrc, etc.)
@@ -79,6 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_voz'])) {
         move_uploaded_file($_FILES['archivo_instrumental']['tmp_name'], "../" . $db_instrumental) &&
         move_uploaded_file($_FILES['archivo_letra']['tmp_name'], "../" . $db_letra)
     ) {
+
+        // Cambiamos permisos a los archivos subidos para evitar problemas de acceso (lectura para todos)
+        chmod("../" . $db_voz, 0644);
+        chmod("../" . $db_instrumental, 0644);
+        chmod("../" . $db_letra, 0644);
 
         $sql = "INSERT INTO canciones (titulo, artista, estilo, voz, instrumental, letra)
                 VALUES ('$titulo', '$artista', '$estilo', '$db_voz', '$db_instrumental', '$db_letra')";

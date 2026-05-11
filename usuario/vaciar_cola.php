@@ -1,6 +1,9 @@
 <?php
 session_start();
 include("../includes/conexion.php");
+
+/** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
+
 // Limpiar la cola de un usuario
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['limpiar_cola'])) {
     // Usamos el idUsuario que recogimos del formulario oculto, aunque también podríamos usar el de la sesión

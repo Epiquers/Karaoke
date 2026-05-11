@@ -3,12 +3,7 @@ session_start();
 include '../includes/conexion.php';
 include 'seguridad_admin.php';
 
-// ELIMINAR canción
-/* if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
-    $idEliminar = $_POST['id_cancion'];
-    $consulta_borrar = "DELETE FROM canciones WHERE id = '$idEliminar'";
-    mysqli_query($conn, $consulta_borrar);
-} */
+/** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
 
 // ELIMINAR canción y sus archivos físicos (incluyendo limpieza de carpetas)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
