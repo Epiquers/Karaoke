@@ -5,12 +5,14 @@ include 'includes/conexion.php';
 $error = "";
 $ok    = "";
 
+// Procesa el formulario de registro al enviar
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre    = $_POST["nombre"];
     $email     = $_POST["email"];
     $password  = $_POST["password"];
     $password2 = $_POST["password2"];
 
+    // Validaciones básicas antes de insertar
     if (empty($nombre) || empty($email) || empty($password) || empty($password2)) {
         $error = "Todos los campos son obligatorios";
     } elseif ($password !== $password2) {

@@ -12,6 +12,7 @@ if (isset($_POST['cambiar_estado'])) {
     exit();
 }
 
+// Consulta con JOIN para obtener las peticiones junto con el nombre del usuario que las envió
 $consulta = "SELECT  p.id_peticion, p.usuario, u.nombre AS nombre_usuario, p.artista, p.titulo, p.estado, p.fechaHora
              FROM peticiones p, usuarios u
              WHERE p.usuario = u.id

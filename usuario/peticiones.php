@@ -37,9 +37,10 @@ $idUsuario = $_SESSION['idUsuario'];
                 <div class="card card-dark">
                     <div class="card-body p-4">
                         <?php
+                        // Muestra el mensaje de confirmación si viene de peticion_enviar.php
                         if (isset($_SESSION['mensaje'])) {
                             echo '<div class="alert alert-success text-center" role="alert">' . $_SESSION['mensaje'] . '</div>';
-                            unset($_SESSION['mensaje']);
+                            unset($_SESSION['mensaje']); // Lo borramos para que no reaparezca al recargar
                         }
                         ?>
                         <form action="peticion_enviar.php" method="POST">

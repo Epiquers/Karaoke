@@ -17,6 +17,7 @@
                 </li>
                 <li class="nav-item">
                     <?php
+                    // Muestra enlaces de admin o de usuario según el rol de la sesión
                     if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2) {
                     ?>
                 <li class="nav-item"><a class="nav-link fw-bold text-success" href="../usuario/canciones.php"><i class="bi bi-music-note-list me-1"></i>Vista Reproductor</a></li>

@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['idCancion'])) {
     $consulta_añadir = "INSERT INTO cola (id_usuario, id_cancion, cantante) VALUES ('$idUsuario', '$idCancion', '$cantante')";
     $result = mysqli_query($conn, $consulta_añadir);
 
-    echo mysqli_insert_id($conn);
+    echo mysqli_insert_id($conn); // devuelve el nuevo id al JS para construir el item en el DOM
     exit();
 }
 
@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mover'])) {
     if ($vecino = mysqli_fetch_assoc($res_vecino)) {
         $idVecino = $vecino['id'];
 
+        // Intercambiamos los ids usando 0 como valor temporal para evitar conflicto de clave única
         mysqli_query($conn, "UPDATE cola SET id = 0 WHERE id = '$idActual'");
         mysqli_query($conn, "UPDATE cola SET id = '$idActual' WHERE id = '$idVecino'");
         mysqli_query($conn, "UPDATE cola SET id = '$idVecino' WHERE id = 0");
@@ -74,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['siguiente'])) {
     exit();
 }
 
+// Cola completa del usuario (para la lista lateral) y todas las canciones (para la biblioteca)
 $result_cola = mysqli_query($conn, "SELECT * FROM cola WHERE id_usuario = '$idUsuario' ORDER BY id ASC");
 $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 ?>
@@ -241,7 +243,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         <?php if ($cancion_actual) : ?>
+                // Bloque principal del reproductor de karaoke, se ejecuta solo si hay canción en cola
                 (function() {
+                    // Referencias a los elementos del DOM del reproductor
                     const audioGuia = document.getElementById('videoKaraoke');
                     const audioInst = document.getElementById('pistaInstrumental');
                     const btnGuia = document.getElementById('btnGuia');
@@ -285,6 +289,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         }
                     });
 
+                    // Carga el archivo .lrc de la canción actual y arranca el motor de karaoke
                     fetch("../<?= $cancion_actual['letra'] ?>")
                         .then(r => r.text())
                         .then(data => {
@@ -292,12 +297,14 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             requestAnimationFrame(engine);
                         });
 
+                    // Botón para silenciar/activar la pista de voz guía
                     btnGuia.onclick = () => {
                         audioGuia.muted = !audioGuia.muted;
                         btnGuia.innerHTML = audioGuia.muted ? '<i class="bi bi-mic-mute"></i> VOZ: OFF' : '<i class="bi bi-mic-fill"></i> VOZ: ON';
                         btnGuia.className = audioGuia.muted ? 'btn btn-player-voz' : 'btn btn-player-voz activo';
                     };
 
+                    // Al dar play: muestra la pantalla de intro con cuenta atrás antes de empezar
                     audioGuia.onplay = () => {
                         if (!introMostrada && audioGuia.currentTime < 1) {
                             audioGuia.pause();
@@ -330,9 +337,11 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         }
                     };
 
+                    // Mantiene la pista instrumental sincronizada con la voz guía
                     audioGuia.onpause = () => audioInst.pause();
                     audioGuia.onseeking = () => audioInst.currentTime = audioGuia.currentTime;
 
+                    // Abre o enfoca la ventana del escenario secundario
                     document.getElementById('btn-abrir-escenario').onclick = () => {
                         if (!ventanaEscenario || ventanaEscenario.closed) {
                             ventanaEscenario = window.open("", "Escenario", "width=1200,height=800");
@@ -342,6 +351,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         }
                     };
 
+                    // Motor de karaoke: se ejecuta en cada frame, colorea las palabras según el tiempo del audio
                     function engine() {
                         const now = audioGuia.currentTime;
                         const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i + 1] || now < letras[i + 1].time));
@@ -386,6 +396,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         requestAnimationFrame(engine);
                     }
 
+                    // Convierte el texto del archivo .lrc en un array de líneas con tiempo y palabras
                     function parsearLRC(lrc) {
                         const res = [];
                         const lines = lrc.split('\n');
@@ -437,6 +448,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                 })();
         <?php endif; ?>
 
+        // Filtro de búsqueda en tiempo real sobre la lista de canciones de la biblioteca
         document.getElementById('inputBusqueda')?.addEventListener('input', function() {
             let t = this.value.toLowerCase().trim();
             document.querySelectorAll('.item-cancion').forEach(i => {
@@ -446,6 +458,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
             });
         });
 
+        // Pone la pantalla de karaoke en modo pantalla completa
         document.getElementById('btnFullscreen')?.addEventListener('click', () => {
             const p = document.getElementById('pantalla-karaoke');
             if (p.requestFullscreen) p.requestFullscreen();
