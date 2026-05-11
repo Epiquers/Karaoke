@@ -7,8 +7,7 @@ include '../includes/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_voz'])) {
 
-    // Recogemos y limpiamos los datos del formulario para evirar inyecciones SQL y problemas con caracteres especiales como por ejemplo
-    // que el artista se llame Guns N' Roses, que el apóstrofe da problemas en la consulta SQL
+    // Recoge y saneea los campos del formulario
     $titulo  =  mysqli_real_escape_string($conn, $_POST['titulo']);
     $artista = mysqli_real_escape_string($conn, $_POST['artista']);
     $estilo  =  mysqli_real_escape_string($conn, $_POST['estilo']);
@@ -46,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['archivo_voz'])) {
     $db_instrumental = "uploads/canciones/{$artista_folder}/". $nombre_final_instrumental;
     $db_letra = "uploads/letras/{$artista_folder}/". $nombre_final_letra;
 
-    // Intentamos mover ambos archivos
+    // Sube los archivos y los guarda en la BD si todo es correcto
     if (
         move_uploaded_file($_FILES['archivo_voz']['tmp_name'], "../" . $db_voz) && 
         move_uploaded_file($_FILES['archivo_instrumental']['tmp_name'], "../" . $db_instrumental) &&

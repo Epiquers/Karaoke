@@ -25,7 +25,7 @@ $idUsuario = $_SESSION['idUsuario'];
 
     <?php include '../includes/navbar.php'; ?>
 
-
+    <!-- ===== FORMULARIO PARA ENVIAR UNA PETICIÓN DE CANCIÓN ===== -->
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
@@ -40,7 +40,7 @@ $idUsuario = $_SESSION['idUsuario'];
                 <div class="card card-dark">
                     <div class="card-body p-4">
                         <?php
-                        // Muestra el mensaje de confirmación si viene de peticion_enviar.php
+                        // Muestra el flash de confirmación si viene de peticion_enviar.php y lo borra de la sesión
                         if (isset($_SESSION['mensaje'])) {
                             echo '<div class="alert alert-success text-center" role="alert">' . $_SESSION['mensaje'] . '</div>';
                             unset($_SESSION['mensaje']); // Lo borramos para que no reaparezca al recargar

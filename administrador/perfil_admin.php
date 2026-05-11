@@ -4,7 +4,7 @@ include("../includes/conexion.php");
 
 /** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
 
-// LÓGICA DE ACTUALIZACIÓN COMPLETA (Formulario)
+// Lógica de actualización completa (nombre, email y contraseña opcional) desde el formulario inline
 if (isset($_POST['update_user'])) {
     $id = $_POST['id'];
     $nombre = $_POST['nombre'];
@@ -26,7 +26,7 @@ if (isset($_POST['update_user'])) {
         echo "Error: " . mysqli_error($conn);
     }
 }
-// Botón rápido de estado
+// Botón rápido para cambiar el estado bloqueado/activo del usuario
 if (isset($_POST['accion_estado'])) {
     $id = $_POST['id'];
     $estado = $_POST['nuevo_estado'];
@@ -84,6 +84,7 @@ if (isset($_POST['accion_estado'])) {
 <body>
     <?php include("../includes/navbar.php"); ?>
 
+    <!-- ===== TABLA DE USUARIOS: edición inline y control de estado ===== -->
     <div class="container mt-5">
     <div class="card-dark">
             <h2 class="mb-4"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h2>
@@ -99,8 +100,9 @@ if (isset($_POST['accion_estado'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $resultado = mysqli_query($conn, "SELECT * FROM usuarios");
+                        <?php
+                        // Recorre todos los usuarios y genera una fila normal + una fila colapsable de edición
+                        $resultado = mysqli_query($conn, "SELECT * FROM usuarios");
                     while ($row = mysqli_fetch_assoc($resultado)) {
                         $id =  $row['id'];
                         // ID único para la fila de edición

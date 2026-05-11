@@ -61,6 +61,7 @@ $consulta_primeraCancion = "SELECT * FROM cola WHERE id_usuario = '$idUsuario' O
 $result_primera = mysqli_query($conn, $consulta_primeraCancion);
 $primera = mysqli_fetch_assoc($result_primera);
 
+// Obtiene los datos de la canción actual si hay alguna en cola
 $cancion_actual = null;
 $id_colaPrimera = null;
 
@@ -97,11 +98,14 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
 <body class="text-light page-canciones">
 
+    <!-- ===== BARRA DE NAVEGACIÓN ===== -->
     <?php include '../includes/navbar.php'; ?>
 
     <div class="container-fluid">
         <div class="row">
+            <!-- ===== COLUMNA LATERAL: BIBLIOTECA Y COLA ===== -->
             <div class="col-12 col-lg-4 col-xl-3 border-end border-secondary bg-dark px-0">
+                <!-- Pestañas de navegación entre Biblioteca y Cola -->
                 <ul class="nav nav-pills nav-fill border-bottom border-secondary">
                     <li class="nav-item">
                         <button class="nav-link active fw-bold" data-bs-toggle="pill" data-bs-target="#tab-biblioteca"><i class="bi bi-music-note-list me-2"></i>BIBLIOTECA</button>
@@ -112,6 +116,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                 </ul>
 
                 <div class="tab-content">
+                    <!-- Tab: Biblioteca de canciones con buscador -->
                     <div class="tab-pane fade show active" id="tab-biblioteca">
                         <div class="p-3">
                             <div class="input-group mb-3">
@@ -136,6 +141,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         </div>
                     </div>
 
+                    <!-- Tab: Cola del usuario con opciones de reordenar y vaciar -->
                     <div class="tab-pane fade" id="tab-cola">
                         <div class="d-flex justify-content-between align-items-center p-3 border-bottom border-secondary bg-dark">
                             <h6 class="text-secondary small mb-0">SIGUIENTES TEMAS</h6>
@@ -185,8 +191,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                 </div>
             </div>
 
+            <!-- ===== COLUMNA PRINCIPAL: REPRODUCTOR DE KARAOKE ===== -->
             <div class="col-12 col-lg-8 col-xl-9 bg-black py-4">
-                <?php if ($cancion_actual) { ?>
+                <?php if ($cancion_actual) { /* Muestra el reproductor si hay canción activa */ ?>
                     <div class="container-fluid text-center">
                         <h2 class="h4 fw-bold text-warning mb-1"><?= $cancion_actual['titulo'] ?></h2>
                         <p class="text-secondary mb-4"><?= $cancion_actual['artista'] ?></p>
@@ -234,7 +241,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             </div>
                         </div>
                     </div>
-                <?php } else { ?>
+                <?php } else { /* Cola vacía: muestra pantalla de espera */ ?>
                     <div class="d-flex flex-column justify-content-center align-items-center text-center h-100 py-5">
                         <i class="bi bi-mic-fill display-1 text-secondary opacity-25"></i>
                         <h3 class="text-muted mt-4">No hay canciones en cola</h3>
@@ -244,6 +251,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
         </div>
     </div>
 
+    <!-- ===== SCRIPTS: Bootstrap y lógica del karaoke ===== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         <?php if ($cancion_actual) : ?>

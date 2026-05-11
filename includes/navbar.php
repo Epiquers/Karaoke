@@ -1,3 +1,4 @@
+<!-- ===== NAVBAR: enlaces dinámicos según el rol (admin=2 / usuario=1) ===== -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
     <div class="container-fluid px-4 mx-lg-4">
         <a class="navbar-brand fw-bold text-warning" href="canciones_admin.php">
@@ -16,6 +17,7 @@
                     </span>
                 </li>
                 <li class="nav-item">
+                <!-- Menú admin: acceso a Reproductor, Usuarios, Peticiones y Gestión -->
                     <?php
                     // Muestra enlaces de admin o de usuario según el rol de la sesión
                     if (isset($_SESSION['rol']) && $_SESSION['rol'] == 2) {
@@ -28,6 +30,7 @@
             <?php
                     } else {
             ?>
+                <!-- Menú usuario: acceso a Principal, Peticiones y Perfil -->
                 <li class="nav-item"><a class="nav-link fw-bold text-info" href="../usuario/canciones.php"><i class="bi bi-house-door-fill me-1"></i>Principal</a></li>
                 <li class="nav-item"><a class="nav-link fw-bold text-warning" href="../usuario/peticiones.php"><i class="bi bi-chat-dots-fill me-1"></i>Peticiones</a></li>
                 <li class="nav-item"><a class="nav-link fw-bold text-success" href="../usuario/perfil.php"><i class="bi bi-person-circle me-1"></i>Mi Perfil</a></li>

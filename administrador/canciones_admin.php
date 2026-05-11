@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['eliminar'])) {
     exit();
 }
 
-// TODAS las canciones
+// Consulta todas las canciones del catálogo ordenadas por últimas añadidas
 $consulta_todas = "SELECT * FROM canciones ORDER BY id DESC";
 $result_todas = mysqli_query($conn, $consulta_todas);
 ?>
@@ -80,8 +80,10 @@ $result_todas = mysqli_query($conn, $consulta_todas);
     <div class="app-container">
         <?php include '../includes/navbar.php'; ?>
 
+        <!-- ===== LAYOUT: columna izquierda (formulario) + derecha (catálogo) ===== -->
         <div class="container-fluid">
             <div class="row">
+                <!-- Columna izquierda: formulario para subir nueva canción -->
                 <div class="col-lg-4 p-4" style="background: #151515;">
                 <div class="card card-dark shadow">
                     <div class="card-body p-4">
@@ -139,6 +141,7 @@ $result_todas = mysqli_query($conn, $consulta_todas);
                     </small>
                 </div>
             </div>
+            <!-- Columna derecha: listado del catálogo con opción de eliminar -->
             <div class="col-lg-8 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="m-0 fw-bold">Gestión de Catálogo</h2>

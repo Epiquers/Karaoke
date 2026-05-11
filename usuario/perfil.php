@@ -17,7 +17,7 @@ $query = "";
 $validar= true; // Variable para controlar si se debe ejecutar la consulta de actualización
 
 
-// Lógica para actualizar el perfil
+// Actualiza nombre, email y contraseña (opcional) del usuario en sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nuevoNombre = $_POST['nombre'];
     $nuevoEmail = $_POST['email']; // Nueva variable para el email
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Obtener datos actuales para mostrar en los inputs
+// Carga los datos actuales para rellenar el formulario
 $res = mysqli_query($conn, "SELECT * FROM usuarios WHERE id = '$idUsuario'");
 $usuario = mysqli_fetch_assoc($res);
 ?>
@@ -70,6 +70,7 @@ $usuario = mysqli_fetch_assoc($res);
 
     <?php include '../includes/navbar.php'; ?>
 
+    <!-- ===== FORMULARIO DE EDICIÓN DEL PERFIL ===== -->
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">

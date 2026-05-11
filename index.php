@@ -4,6 +4,7 @@ include 'includes/conexion.php';
 
 $error = "";
 
+// Procesa el formulario de login: valida credenciales y redirige según el rol
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
@@ -56,13 +57,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body class="bg-dark text-light">
 
+    <!-- ===== FORMULARIO DE LOGIN ===== -->
     <div class="container min-vh-100 d-flex align-items-center">
         <div class="row justify-content-center w-100">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
                 <div class="card card-dark p-4">
                     <h2 class="text-center mb-4">🎤 Karaoke Online</h2>
 
-                    <?php
+                    <?php /* Muestra el mensaje de error si las credenciales son incorrectas */
                     if ($error) {
                         echo '<div class="alert alert-danger">' . $error . '</div>';
                     }

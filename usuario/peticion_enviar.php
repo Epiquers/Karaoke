@@ -7,7 +7,7 @@ include '../includes/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    // Inserta la petición en la BD si el usuario está logueado y los campos llegan correctamente
+    // Inserta la petición en la BD y guarda un mensaje flash en sesión para mostrarlo en peticiones.php
     if (isset($_SESSION['idUsuario']) || isset($_POST['artista']) || isset($_POST['titulo'])) {
         $idUsuario = $_SESSION['idUsuario'];
         $artista =  $_POST['artista'];

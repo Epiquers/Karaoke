@@ -5,7 +5,7 @@ include("../includes/conexion.php");
 /** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
 
 
-// Cambiar estado de una petición
+// Cambia el estado de una petición entre pendiente (0) y completo (1)
 if (isset($_POST['cambiar_estado'])) {
     $id_peticion = ($_POST['id_peticion']);
     $nuevo_estado = ($_POST['nuevo_estado']); // 0 pendiente, 1 completo
@@ -15,7 +15,7 @@ if (isset($_POST['cambiar_estado'])) {
     exit();
 }
 
-// Consulta con JOIN para obtener las peticiones junto con el nombre del usuario que las envió
+// Obtiene todas las peticiones con el nombre del usuario mediante JOIN, ordenadas por estado y fecha
 $consulta = "SELECT  p.id_peticion, p.usuario, u.nombre AS nombre_usuario, p.artista, p.titulo, p.estado, p.fechaHora
              FROM peticiones p, usuarios u
              WHERE p.usuario = u.id
@@ -52,6 +52,7 @@ $resultado = mysqli_query($conn, $consulta);
 <body>
     <?php include("../includes/navbar.php"); ?>
 
+    <!-- ===== TABLA DE PETICIONES con toggle pendiente/completo ===== -->
     <div class="container mt-5">
         <div class="card-dark">
             <h2 class="mb-4"><i class="bi bi-chat-dots-fill me-2"></i>Peticiones de usuarios</h2>
@@ -68,7 +69,8 @@ $resultado = mysqli_query($conn, $consulta);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (mysqli_num_rows($resultado) > 0) { ?>
+                    <?php /* Itera las peticiones: verde = completo, rojo = pendiente */
+                    if (mysqli_num_rows($resultado) > 0) { ?>
                         <?php while ($row = mysqli_fetch_assoc($resultado)) {
                             $completa = $row['estado'] == 1;
                             $btn_color = $completa ? 'btn-outline-success' : 'btn-outline-danger';

@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <body class="bg-dark text-light">
 
+    <!-- ===== FORMULARIO DE REGISTRO DE NUEVO USUARIO ===== -->
     <div class="container min-vh-100 d-flex align-items-center">
         <div class="row justify-content-center w-100">
             <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">

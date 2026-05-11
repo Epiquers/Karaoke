@@ -4,7 +4,7 @@ include("../includes/conexion.php");
 
 /** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
 
-// Limpiar la cola de un usuario
+// Elimina todas las canciones de la cola del usuario y redirige al reproductor
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['limpiar_cola'])) {
     // Usamos el idUsuario que recogimos del formulario oculto, aunque también podríamos usar el de la sesión
     $idUsuario = $_POST['idUsuario'];
