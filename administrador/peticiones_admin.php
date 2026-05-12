@@ -30,6 +30,7 @@ $resultado = mysqli_query($conn, $consulta);
     <title>Gestión de Peticiones</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <?php include '../includes/favicon.php'; ?>
     <style>
         body {
             background-color: #000;

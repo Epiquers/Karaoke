@@ -94,6 +94,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
+    <?php include '../includes/favicon.php'; ?>
 </head>
 
 <body class="text-light page-canciones">

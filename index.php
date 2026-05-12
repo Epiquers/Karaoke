@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>Kantabile - Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <?php include __DIR__ . '/includes/favicon.php'; ?>
     <style>
         body {
             /* Recuerda que la imagen debe estar en esta ruta */
@@ -101,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="container">
         <div class="row justify-content-center w-100">
             <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
-                
                 <div class="card card-login p-4 text-light text-center">
                     <img src="img/logoregistro.png" alt="Logo Kantabile" class="mb-3 align-self-center" style="width: 150px;">
                 

@@ -2,7 +2,7 @@
 
 body {
     /* Un azul muy oscuro que se degrada hacia un negro azulado */
-    background: radial-gradient(circle at center, #0000ff 0%, #ffff00 100%);
+    background: radial-gradient(circle at center, #1c1c2a 0%, #36362c 100%);
     background-attachment: fixed;
     color: white;
     min-height: 100vh;

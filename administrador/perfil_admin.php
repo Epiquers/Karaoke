@@ -30,7 +30,7 @@ if (isset($_POST['update_user'])) {
 if (isset($_POST['accion_estado'])) {
     $id = $_POST['id'];
     $estado = $_POST['nuevo_estado'];
-    
+
     mysqli_query($conn, "UPDATE usuarios SET estado = '$estado' WHERE id = $id");
     header("Location: perfil_admin.php");
     exit();
@@ -44,14 +44,19 @@ if (isset($_POST['accion_estado'])) {
     <title>Kantabile - Gestión de Usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <?php include '../includes/favicon.php'; ?>
     <style>
         body {
-            background-color: #000;
+            background: radial-gradient(circle at center, #543772 0%, #727228 100%);
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
             color: white;
         }
 
         .card-dark {
-            background-color: #151515;
+            background-color: #0000008a;
             border: 1px solid #333;
             padding: 20px;
             border-radius: 10px;
@@ -76,7 +81,7 @@ if (isset($_POST['accion_estado'])) {
         }
 
         .table-dark {
-            --bs-table-bg: #151515;
+            --bs-table-bg: #24242478;
         }
     </style>
 </head>
@@ -86,7 +91,7 @@ if (isset($_POST['accion_estado'])) {
 
     <!-- ===== TABLA DE USUARIOS: edición inline y control de estado ===== -->
     <div class="container mt-5">
-    <div class="card-dark">
+        <div class="card-dark">
             <h2 class="mb-4"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h2>
 
             <table class="table table-dark table-hover align-middle text-center">
@@ -100,9 +105,9 @@ if (isset($_POST['accion_estado'])) {
                     </tr>
                 </thead>
                 <tbody>
-                        <?php
-                        // Recorre todos los usuarios y genera una fila normal + una fila colapsable de edición
-                        $resultado = mysqli_query($conn, "SELECT * FROM usuarios");
+                    <?php
+                    // Recorre todos los usuarios y genera una fila normal + una fila colapsable de edición
+                    $resultado = mysqli_query($conn, "SELECT * FROM usuarios");
                     while ($row = mysqli_fetch_assoc($resultado)) {
                         $id =  $row['id'];
                         // ID único para la fila de edición
@@ -123,7 +128,7 @@ if (isset($_POST['accion_estado'])) {
 
                             <td class="text-end">
 
-                             <form action="" method="POST" class="d-inline">
+                                <form action="" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
 
                                     <?php if ($bloqueado) { ?>
@@ -139,12 +144,12 @@ if (isset($_POST['accion_estado'])) {
                                     <?php } ?>
                                 </form>
 
-                                <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#fila_<?php echo $id;?>">Editar</button>
+                                <button class="btn btn-outline-warning btn-sm" data-bs-toggle="collapse" data-bs-target="#fila_<?php echo $id; ?>">Editar</button>
 
                             </td>
                         </tr>
 
-                        <tr class="collapse fila-edicion" id="fila_<?php echo $id;?>">
+                        <tr class="collapse fila-edicion" id="fila_<?php echo $id; ?>">
                             <td colspan="6">
                                 <form method="POST" class="row p-3 g-2">
                                     <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
