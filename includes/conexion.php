@@ -10,7 +10,7 @@ if ($is_localhost) {
     $basededatos = "karaoke";
 } else {
     // --- CONFIGURACIÓN PARA EL SERVIDOR (cPanel) ---
-    $servidor = "localhost";           // En cPanel se mantiene localhost
+    $servidor = "127.0.0.1";           // En cPanel se mantiene localhost
     $user = "adrianvi_kantabile"; // El usuario que creaste en cPanel
     $clave = "Kantabile--2026--";     // La contraseña que anotaste
     $basededatos = "adrianvi_kantabile"; // El nombre de la BD en cPanel

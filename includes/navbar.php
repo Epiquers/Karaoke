@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary">
     <div class="container-fluid px-4 mx-lg-4">
         <a class="navbar-brand fw-bold text-warning" href="canciones_admin.php">
-            🎤 Kantabile
+            <img src="../img/logokantabilenavbar.png" alt="Kantabile Logo" style="width: 120px;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarUsuario">

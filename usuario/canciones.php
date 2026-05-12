@@ -243,8 +243,9 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                     </div>
                 <?php } else { /* Cola vacía: muestra pantalla de espera */ ?>
                     <div class="d-flex flex-column justify-content-center align-items-center text-center h-100 py-5">
-                        <i class="bi bi-mic-fill display-1 text-secondary opacity-25"></i>
-                        <h3 class="text-muted mt-4">No hay canciones en cola</h3>
+                        <!-- <i class="bi bi-mic-fill display-1 text-secondary opacity-25"></i> -->
+                        <img src="../img/logosinfondosolo.png" alt="Logo Kantabile" class="mb-3" style="width: 200px;">
+                        <h3 class="text-secondary mt-4">No hay canciones en cola</h3>
                     </div>
                 <?php } ?>
             </div>
