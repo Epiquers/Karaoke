@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 30-03-2026 a las 22:30:02
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Servidor: localhost:3306
+-- Tiempo de generación: 12-05-2026 a las 18:20:12
+-- Versión del servidor: 10.11.11-MariaDB-cll-lve
+-- Versión de PHP: 8.4.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,10 +18,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `karaoke`
+-- Base de datos: `adrianvi_kantabile`
 --
-CREATE DATABASE IF NOT EXISTS `karaoke` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
-USE `karaoke`;
+CREATE DATABASE IF NOT EXISTS `adrianvi_kantabile` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci;
+USE `adrianvi_kantabile`;
 
 -- --------------------------------------------------------
 
@@ -32,13 +32,13 @@ USE `karaoke`;
 DROP TABLE IF EXISTS `canciones`;
 CREATE TABLE `canciones` (
   `id` int(11) NOT NULL,
-  `titulo` varchar(200) NOT NULL,
-  `artista` varchar(100) NOT NULL,
-  `estilo` varchar(100) NOT NULL,
-  `voz` varchar(255) NOT NULL,
-  `instrumental` varchar(255) NOT NULL,
-  `letra` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+  `titulo` varchar(200) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `artista` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `estilo` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `voz` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `instrumental` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `letra` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `canciones`
@@ -66,19 +66,8 @@ CREATE TABLE `cola` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) DEFAULT NULL,
   `id_cancion` int(11) DEFAULT NULL,
-  `cantante` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `cola`
---
-
-INSERT INTO `cola` (`id`, `id_usuario`, `id_cancion`, `cantante`) VALUES
-(96, 1, 26, 'Edu'),
-(98, 2, 18, 'Eduardo'),
-(99, 1, 18, 'Adrian'),
-(100, 1, 25, 'Edu'),
-(101, 1, 23, 'Edu');
+  `cantante` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -90,19 +79,20 @@ DROP TABLE IF EXISTS `peticiones`;
 CREATE TABLE `peticiones` (
   `id_peticion` int(11) NOT NULL,
   `usuario` int(11) NOT NULL,
-  `artista` varchar(50) NOT NULL,
-  `titulo` varchar(50) NOT NULL,
+  `artista` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `titulo` varchar(50) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 - pendiente\r\n1 - realizado',
   `fechaHora` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `peticiones`
 --
 
 INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado`, `fechaHora`) VALUES
-(1, 3, 'Midnite', 'I am a Bushman', 0, '2026-03-26 21:39:28'),
-(2, 2, 'Dulce Pontes', 'Cancão Do Mar', 0, '2026-03-26 21:35:27');
+(4, 13, 'Midnite', 'I am a Bushman', 0, '2026-05-12 15:55:24'),
+(5, 14, 'Jarabe de palo', 'La flaca', 0, '2026-05-12 15:55:53'),
+(6, 15, 'Dulce Pontes', 'Cancão Do Mar', 0, '2026-05-12 15:56:52');
 
 -- --------------------------------------------------------
 
@@ -113,22 +103,24 @@ INSERT INTO `peticiones` (`id_peticion`, `usuario`, `artista`, `titulo`, `estado
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `passwd` varchar(255) NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `passwd` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `rol` int(11) NOT NULL DEFAULT 1 COMMENT '1-Usuario\r\n2-Administrador',
   `estado` tinyint(1) NOT NULL COMMENT '0 - activo\r\n1 - bloqueado',
   `registrado` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `passwd`, `rol`, `estado`, `registrado`) VALUES
-(1, 'Admin', 'admin@karaoke.com', '1234', 2, 0, '2026-03-05 20:35:27'),
-(2, 'Juan', 'juan@test.com', '1234', 1, 0, '2026-03-05 18:55:19'),
-(3, 'Jose Luis', 'prueba@karaoke.com', '1234', 1, 0, '2026-03-05 18:55:19');
+(10, 'Eduardo Piquer', 'EPiquer@kantabile.com', '1234', 2, 0, '2026-05-11 23:01:49'),
+(11, 'Adrian Vincent', 'AVincent@kantabile.com', '1234', 2, 0, '2026-05-11 23:02:04'),
+(13, 'Victor Verdú', 'VVerdu@kantabile.com', '1234', 1, 0, '2026-05-11 23:02:37'),
+(14, 'Fernando Ureña', 'FUrena@kantabile.com', '1234', 1, 0, '2026-05-11 23:03:19'),
+(15, 'Invitado Especial', 'Invitado@kantabile.com', '1234', 1, 0, '2026-05-11 23:17:00');
 
 --
 -- Índices para tablas volcadas
@@ -176,19 +168,19 @@ ALTER TABLE `canciones`
 -- AUTO_INCREMENT de la tabla `cola`
 --
 ALTER TABLE `cola`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT de la tabla `peticiones`
 --
 ALTER TABLE `peticiones`
-  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_peticion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas
