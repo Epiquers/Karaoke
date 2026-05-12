@@ -1,5 +1,3 @@
-conexión nueva 
-
 <?php
 // Detectamos si el servidor es local o remoto
 $is_localhost = ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_ADDR'] == '127.0.0.1');
@@ -13,8 +11,8 @@ if ($is_localhost) {
 } else {
     // --- CONFIGURACIÓN PARA EL SERVIDOR (cPanel) ---
     $servidor = "localhost";           // En cPanel se mantiene localhost
-    $user = "adrianvi_user_kantabile"; // El usuario que creaste en cPanel
-    $clave = "Tu_Contraseña_Aqui";     // La contraseña que anotaste
+    $user = "adrianvi_kantabile"; // El usuario que creaste en cPanel
+    $clave = "Kantabile--2026--";     // La contraseña que anotaste
     $basededatos = "adrianvi_kantabile"; // El nombre de la BD en cPanel
 }
 

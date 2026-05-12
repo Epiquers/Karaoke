@@ -5,62 +5,112 @@ include 'includes/conexion.php';
 $error = "";
 $ok    = "";
 
-// Procesa el formulario de registro al enviar
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nombre    = $_POST["nombre"];
-    $email     = $_POST["email"];
+    $nombre    = mysqli_real_escape_string($conn, $_POST["nombre"]);
+    $email     = mysqli_real_escape_string($conn, $_POST["email"]);
     $password  = $_POST["password"];
     $password2 = $_POST["password2"];
 
-    // Validaciones básicas antes de insertar
     if (empty($nombre) || empty($email) || empty($password) || empty($password2)) {
-        $error = "Todos los campos son obligatorios";
+        $error = "❌ Todos los campos son obligatorios.";
     } elseif ($password !== $password2) {
-        $error = "Las contraseñas no coinciden";
+        $error = "❌ Las contraseñas no coinciden.";
     } else {
-        $consulta_registro = "INSERT INTO usuarios (nombre, email, passwd) VALUES ('$nombre', '$email', '$password')";
-        mysqli_query($conn, $consulta_registro);
-        $ok = "Usuario registrado correctamente";
+        $check_email = "SELECT id FROM usuarios WHERE email = '$email'";
+        $resultado = mysqli_query($conn, $check_email);
+        if (mysqli_num_rows($resultado) > 0) {
+            $error = "⚠️ Este correo ya está registrado.";
+        } else {
+            $consulta_registro = "INSERT INTO usuarios (nombre, email, passwd) VALUES ('$nombre', '$email', '$password')";
+            if (mysqli_query($conn, $consulta_registro)) {
+                $ok = "✅ Registro exitoso. Redirigiendo...";
+                header("refresh:2;url=index.php");
+            } else {
+                $error = "❌ Error: " . mysqli_error($conn);
+            }
+        }
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Karaoke Online - Registro</title>
-
+    <title>Kantabile - Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            /* Cambia 'fondo-karaoke.jpg' por el nombre real de tu imagen subida */
+            background: url('img/fondologin.png') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-registro {
+            background: rgba(0, 0, 0, 0.75); /* Fondo oscuro semitransparente */
+            backdrop-filter: blur(10px);    /* Efecto de desenfoque cristal */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-main {
+            background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+            border: none;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-main:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+            color: white;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white !important;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: none;
+            border-color: #00d2ff;
+        }
+         .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+    </style>
 </head>
+<body>
 
-<body class="bg-dark text-light">
-
-    <!-- ===== FORMULARIO DE REGISTRO DE NUEVO USUARIO ===== -->
-    <div class="container min-vh-100 d-flex align-items-center">
+    <div class="container  min-vh-100 d-flex align-items-center">
         <div class="row justify-content-center w-100">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
-                <div class="card card-dark p-4">
-                    <h2 class="text-center mb-4">📝 Registro</h2>
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+                
+                <div class="card card-registro p-4 text-light">
+                    <img src="img/logoregistro.png" alt="Logo Kantabile" class="mb-3 align-self-center" style="width: 150px;">
 
-                    <?php
-                    if ($error) {
-                        echo "<div class='alert alert-danger'>$error</div>";
-                    } elseif ($ok) {
-                        echo "<div class='alert alert-success'>$ok</div>";
-                    }
-                    ?>
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger py-2" style="font-size: 0.9rem;"><?php echo $error; ?></div>
+                    <?php elseif ($ok): ?>
+                        <div class="alert alert-success py-2" style="font-size: 0.9rem;"><?php echo $ok; ?></div>
+                    <?php endif; ?>
 
                     <form method="POST">
                         <div class="mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control">
+                            <label class="form-label">Nombre de usuario</label>
+                            <input type="text" name="nombre" class="form-control" placeholder="Nombre y apellido">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" name="email" class="form-control" placeholder="correo@ejemplo.com">
                         </div>
 
                         <div class="mb-3">
@@ -69,22 +119,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Repetir contraseña</label>
+                            <label class="form-label">Confirmar Contraseña</label>
                             <input type="password" name="password2" class="form-control">
                         </div>
 
-                        <button type="submit" class="btn btn-main w-100">Registrarse</button>
+                        <button type="submit" class="btn btn-main w-100 py-2 mt-2">REGISTRARSE</button>
                     </form>
 
-                    <p class="text-center text-secondary mt-3">
-                        ¿Ya tienes cuenta?
-                        <a href="index.php">Inicia sesión</a>
+                    <p class="text-center mt-4 mb-0">
+                        <small class="text-secondary">¿Ya tienes cuenta?</small><br>
+                        <a href="index.php" class="text-info text-decoration-none">Inicia sesión aquí</a>
                     </p>
                 </div>
+
             </div>
         </div>
     </div>
 
 </body>
-
 </html>
