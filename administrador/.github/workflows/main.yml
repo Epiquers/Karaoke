@@ -1,0 +1,22 @@
+name: Despliegue Kantabile
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  web-deploy:
+    name: 🚀 Desplegando a cPanel
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Obteniendo el código actual
+      uses: actions/checkout@v3
+
+    - name: 📂 Subiendo archivos por FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: public_html/kantabile/
+        delete-removed: false
