@@ -238,7 +238,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                                 </button>
                                 <button type="button" class="btn btn-player-siguiente px-4" onclick="document.getElementById('form-siguiente').submit()"><i class="bi bi-skip-forward-fill me-2"></i>Siguiente</button>
                                 <button id="btnFullscreen" class="btn btn-player-sec"><i class="bi bi-fullscreen"></i></button>
-                                <button id="btn-abrir-escenario" class="btn btn-player-sec"><i class="bi bi-tv me-2"></i>Escenario</button>
+                                <button id="btn-abrir-escenario" class="btn btn-player-sec d-none d-md-inline-flex"><i class="bi bi-tv me-2"></i>Escenario</button>
                             </div>
                         </div>
                     </div>
