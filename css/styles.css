@@ -389,5 +389,19 @@ audio#videoKaraoke::-webkit-media-controls-panel {
     text-transform: uppercase;
 }
 
+@media (max-width: 767.98px) {
+    #linea-actual {
+        font-size: 1.8rem !important;
+    }
+
+    #linea-siguiente {
+        font-size: 1rem !important;
+    }
+
+    #btn-abrir-escenario {
+        display: none !important;
+    }
+}
+
 
 
