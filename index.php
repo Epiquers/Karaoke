@@ -106,8 +106,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
             .form-control {
                 font-size: 1.3rem;
-                padding: 0.85rem 1rem;
-                min-height: 3.2rem;
+                padding: 0.6rem 1rem;
+                min-height: 2.8rem;
             }
             .btn-main {
                 font-size: 1.3rem;
