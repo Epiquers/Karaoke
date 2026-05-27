@@ -49,9 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php include __DIR__ . '/includes/favicon.php'; ?>
     <style>
         body {
-            /* Recuerda que la imagen debe estar en esta ruta */
-            background: url('img/fondologin.png') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #1a1a1a;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -94,6 +92,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Placeholder en blanco con transparencia */
         .form-control::placeholder {
             color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* -- Responsive móvil -- */
+        @media (max-width: 575.98px) {
+            .card-login {
+                padding: 2rem 1.5rem !important;
+            }
+            .form-label {
+                font-size: 1.15rem;
+            }
+            .form-control {
+                font-size: 1.15rem;
+                padding: 0.7rem 1rem;
+            }
+            .btn-main {
+                font-size: 1.15rem;
+                padding: 0.75rem;
+            }
+            .card-login img {
+                width: 180px !important;
+            }
+            .card-login p, .card-login a, .card-login small {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>

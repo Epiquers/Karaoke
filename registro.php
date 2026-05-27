@@ -41,9 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
    <?php include __DIR__ . '/includes/favicon.php'; ?>
     <style>
         body {
-            /* Cambia 'fondo-karaoke.jpg' por el nombre real de tu imagen subida */
-            background: url('img/fondologin.png') no-repeat center center fixed;
-            background-size: cover;
+            background-color: #1a1a1a;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -84,6 +82,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
          .form-control::placeholder {
             color: rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* -- Responsive móvil -- */
+        @media (max-width: 575.98px) {
+            .card-registro {
+                padding: 2rem 1.5rem !important;
+            }
+            .form-label {
+                font-size: 1.15rem;
+            }
+            .form-control {
+                font-size: 1.15rem;
+                padding: 0.7rem 1rem;
+            }
+            .btn-main {
+                font-size: 1.15rem;
+                padding: 0.75rem;
+            }
+            .card-registro img {
+                width: 180px !important;
+            }
+            .card-registro p, .card-registro a, .card-registro small {
+                font-size: 1rem;
+            }
         }
 
     </style>

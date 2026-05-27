@@ -48,11 +48,10 @@ if (isset($_POST['accion_estado'])) {
     <?php include '../includes/favicon.php'; ?>
     <style>
         body {
-            background: radial-gradient(circle at center, #543772 0%, #727228 100%);
+            background-color: #1a1a1a;
             background-attachment: fixed;
             color: white;
             min-height: 100vh;
-            color: white;
         }
 
         .card-dark {
@@ -120,11 +119,11 @@ if (isset($_POST['accion_estado'])) {
                     ?>
 
                         <tr>
-                            <td><?php echo $row['id']; ?></td>
-                            <td><strong><?php echo $row['nombre']; ?></strong></td>
-                            <td class="text-secondary"><?php echo $row['email']; ?></td>
+                            <td class="text-secondary fw-bold"><?php echo $row['id']; ?></td>
+                            <td class="text-secondary fw-bold"><?php echo $row['nombre']; ?></td>
+                            <td class="text-secondary fw-bold"><?php echo $row['email']; ?></td>
 
-                            <td class="text-secondary d-none d-sm-table-cell"><?php echo $row['passwd']; ?></td>
+                            <td class="text-secondary fw-bold d-none d-sm-table-cell"><?php echo $row['passwd']; ?></td>
 
                             <td class="text-end">
 

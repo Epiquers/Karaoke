@@ -33,7 +33,7 @@ $resultado = mysqli_query($conn, $consulta);
     <?php include '../includes/favicon.php'; ?>
     <style>
         body {
-            background-color: #000;
+            background-color: #1a1a1a;
             color: white;
         }
 
@@ -79,11 +79,11 @@ $resultado = mysqli_query($conn, $consulta);
                             $nombre_usuario = $row['nombre_usuario'];
                         ?>
                             <tr>
-                                <td><?php echo $row['id_peticion']; ?></td>
-                                <td><strong><?php echo $nombre_usuario; ?></strong></td>
-                                <td class="text-secondary"><?php echo $row['artista']; ?></td>
-                                <td class="text-secondary"><?php echo $row['titulo']; ?></td>
-                                <td class="text-secondary"><?php echo date('d/m/Y H:i', strtotime($row['fechaHora'])); ?></td>
+                                <td class="text-secondary fw-bold"><?php echo $row['id_peticion']; ?></td>
+                                <td class="text-secondary fw-bold"><?php echo $nombre_usuario; ?></td>
+                                <td class="text-secondary fw-bold"><?php echo $row['artista']; ?></td>
+                                <td class="text-secondary fw-bold"><?php echo $row['titulo']; ?></td>
+                                <td class="text-secondary fw-bold"><?php echo date('d/m/Y H:i', strtotime($row['fechaHora'])); ?></td>
                                 <td class="text-center">
                                     <form method="POST" class="d-inline">
                                         <input type="hidden" name="id_peticion" value="<?php echo $row['id_peticion']; ?>">

@@ -1,8 +1,7 @@
 /* ---------- ESTILOS GENERALES ---------- */
 
 body {
-    /* Un azul muy oscuro que se degrada hacia un negro azulado */
-    background: radial-gradient(circle at center, #1c1c2a 0%, #36362c 100%);
+    background-color: #1a1a1a;
     background-attachment: fixed;
     color: white;
     min-height: 100vh;
@@ -86,10 +85,13 @@ body {
 .btn-main {
   background-color: #dc3545;
   border: none;
+  color: white !important;
 }
 
 .btn-main:hover {
   background-color: #bb2d3b;
+  color: white !important;
+  font-weight: bold;
 }
 
 /* ---------- LINKS ---------- */
