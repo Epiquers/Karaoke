@@ -44,9 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         body {
             background: url('img/fondologin.png') no-repeat center center fixed;
             background-size: cover;
-            height: 100vh;
-            display: flex;
-            align-items: center;
+            min-height: 100vh;
         }
 
         .card-registro {
@@ -115,11 +113,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
 
-    <div class="container  min-vh-100 d-flex align-items-center">
-        <div class="row justify-content-center w-100">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
-                
-                <div class="card card-registro p-4 text-light">
+    <div class="min-vh-100 py-4 d-flex align-items-start justify-content-center">
+        <div class="w-100 px-3" style="max-width: 460px;">
+            <div class="card card-registro p-4 text-light">
                     <img src="img/logoregistro.png" alt="Logo Kantabile" class="mb-3 align-self-center" style="width: 150px;">
 
                     <?php if ($error): ?>
@@ -156,8 +152,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <small class="text-secondary">¿Ya tienes cuenta?</small><br>
                         <a href="index.php" class="text-info text-decoration-none">Inicia sesión aquí</a>
                     </p>
-                </div>
-
             </div>
         </div>
     </div>

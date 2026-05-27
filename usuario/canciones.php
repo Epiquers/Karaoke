@@ -93,7 +93,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
     <title>Kantabile - Karaoke Pro Elite</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../css/styles.css?v=2">
+    <link rel="stylesheet" href="../css/styles.css?v=4">
     <?php include '../includes/favicon.php'; ?>
 </head>
 
