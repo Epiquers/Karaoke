@@ -36,12 +36,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kantabile - Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
    <?php include __DIR__ . '/includes/favicon.php'; ?>
     <style>
         body {
-            background-color: #1a1a1a;
+            background: url('img/fondologin.png') no-repeat center center fixed;
+            background-size: cover;
             height: 100vh;
             display: flex;
             align-items: center;
@@ -87,24 +89,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* -- Responsive móvil -- */
         @media (max-width: 575.98px) {
             .card-registro {
-                padding: 2rem 1.5rem !important;
+                padding: 2.5rem 1.5rem !important;
             }
             .form-label {
-                font-size: 1.15rem;
+                font-size: 1.3rem;
             }
             .form-control {
-                font-size: 1.15rem;
-                padding: 0.7rem 1rem;
+                font-size: 1.3rem;
+                padding: 0.85rem 1rem;
+                min-height: 3.2rem;
             }
             .btn-main {
-                font-size: 1.15rem;
-                padding: 0.75rem;
+                font-size: 1.3rem;
+                padding: 0.9rem;
             }
             .card-registro img {
-                width: 180px !important;
+                width: 200px !important;
             }
             .card-registro p, .card-registro a, .card-registro small {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
         }
 
