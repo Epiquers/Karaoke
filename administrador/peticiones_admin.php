@@ -59,6 +59,7 @@ $resultado = mysqli_query($conn, $consulta);
         <div class="card-dark">
             <h2 class="mb-4"><i class="bi bi-chat-dots-fill me-2"></i>Peticiones de usuarios</h2>
 
+            <div class="table-responsive">
             <table class="table table-dark table-hover align-middle text-center">
                 <thead>
                     <tr>
@@ -103,6 +104,7 @@ $resultado = mysqli_query($conn, $consulta);
                     <?php } ?>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 

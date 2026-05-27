@@ -94,6 +94,7 @@ if (isset($_POST['accion_estado'])) {
         <div class="card-dark">
             <h2 class="mb-4"><i class="bi bi-people-fill me-2"></i>Gestión de Usuarios</h2>
 
+            <div class="table-responsive">
             <table class="table table-dark table-hover align-middle text-center">
                 <thead>
                     <tr>
@@ -175,6 +176,7 @@ if (isset($_POST['accion_estado'])) {
                     <?php }; ?>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
