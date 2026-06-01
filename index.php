@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 <body>
 
-    <div class="min-vh-100 py-4 d-flex align-items-start justify-content-center">
+    <div class="min-vh-100 py-4 d-flex align-items-start align-items-md-center justify-content-center">
         <div class="w-100 px-3" style="max-width: 460px;">
             <div class="card card-login p-4 text-light text-center">
                     <img src="img/logoregistro.png" alt="Logo Kantabile" class="mb-3 align-self-center" style="width: 150px;">

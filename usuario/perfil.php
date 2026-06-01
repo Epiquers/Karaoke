@@ -14,21 +14,28 @@ if (!isset($_SESSION['idUsuario'])) {
 $idUsuario = $_SESSION['idUsuario'];
 $mensaje = "";
 $query = "";
-$validar= true; // Variable para controlar si se debe ejecutar la consulta de actualización
+$validar = true;
 
+// Carga los datos actuales para rellenar el formulario (necesario antes del POST para validar contraseña antigua)
+$res = mysqli_query($conn, "SELECT * FROM usuarios WHERE id = '$idUsuario'");
+$usuario = mysqli_fetch_assoc($res);
 
 // Actualiza nombre, email y contraseña (opcional) del usuario en sesión
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nuevoNombre = $_POST['nombre'];
-    $nuevoEmail = $_POST['email']; // Nueva variable para el email
-    $nuevaPassword = $_POST['passwd'];
+    $nuevoEmail = $_POST['email'];
+    $passwordAntigua = $_POST['passwd'];
+    $nuevaPassword = $_POST['passwd1'];
     $nuevaPassword2 = $_POST['passwd2'];
 
     if (!empty($nuevaPassword)) {
-        if ($nuevaPassword !== $nuevaPassword2) {
+        // Verificar que la contraseña antigua es correcta
+        if ($passwordAntigua !== $usuario['passwd']) {
+            $mensaje = "<div class='alert alert-danger bg-danger text-white border-0 text-center'>La contraseña antigua no es correcta.</div>";
+            $validar = false;
+        } elseif ($nuevaPassword !== $nuevaPassword2) {
             $mensaje = "<div class='alert alert-danger bg-danger text-white border-0 text-center'>Las contraseñas no coinciden. Por favor, inténtalo de nuevo.</div>";
             $validar = false;
-            // No continuar con la actualización si las contraseñas no coinciden
         } else {
             // Actualización con contraseña, nombre y email
             $query = "UPDATE usuarios SET nombre = '$nuevoNombre', email = '$nuevoEmail', passwd = '$nuevaPassword' WHERE id = '$idUsuario'";
@@ -39,19 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($validar && !empty($query)) {
-
         if (mysqli_query($conn, $query)) {
             $_SESSION['nombre'] = $nuevoNombre; // Actualizar el nombre en la sesión para el navbar
             $mensaje = "<div class='alert alert-success bg-success text-white border-0 text-center'>Perfil actualizado correctamente.</div>";
+            // Recargar datos actualizados
+            $res = mysqli_query($conn, "SELECT * FROM usuarios WHERE id = '$idUsuario'");
+            $usuario = mysqli_fetch_assoc($res);
         } else {
             $mensaje = "<div class='alert alert-danger bg-danger text-white border-0 text-center'>Error al actualizar el perfil.</div>";
         }
     }
 }
-
-// Carga los datos actuales para rellenar el formulario
-$res = mysqli_query($conn, "SELECT * FROM usuarios WHERE id = '$idUsuario'");
-$usuario = mysqli_fetch_assoc($res);
 ?>
 
 <!DOCTYPE html>
@@ -112,8 +117,8 @@ $usuario = mysqli_fetch_assoc($res);
                                 <label for="password" class="form-label small fw-bold">ANTIGUA CONTRASEÑA</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-dark border-0 text-secondary"><i class="bi bi-lock"></i></span>
-                                    <input type="text" name="passwd" id="passwd" class="form-control"
-                                        value="<?= $usuario['passwd'] ?>" readonly>
+                                    <input type="password" name="passwd" id="passwd" class="form-control"
+                                        placeholder="Requerida solo para cambiar contraseña">
                                 </div>
                             </div>
 
@@ -121,7 +126,7 @@ $usuario = mysqli_fetch_assoc($res);
                                 <label for="password" class="form-label small fw-bold">NUEVA CONTRASEÑA</label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-dark border-0 text-secondary"><i class="bi bi-lock"></i></span>
-                                    <input type="password" name="passwd" id="passwd" class="form-control"
+                                    <input type="password" name="passwd1" id="passwd1" class="form-control"
                                         placeholder="Dejar en blanco para no cambiar">
                                 </div>
                             </div>
