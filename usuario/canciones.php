@@ -367,35 +367,35 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
                     // Motor de karaoke: se ejecuta en cada frame, colorea las palabras según el tiempo del audio
                     function engine() {
-                        const now = audioGuia.currentTime; // tiempo actual del audio en segundos
-                        const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i + 1] || now < letras[i + 1].time)); // línea activa: la última cuyo tiempo de inicio ya pasó y cuya siguiente aún no ha llegado
+                        const now = audioGuia.currentTime;
+                        const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i + 1] || now < letras[i + 1].time));
 
                         if (idx !== -1) {
-                            const linea = letras[idx]; // objeto de la línea activa con su array de palabras
-                            if (displayActual.dataset.index != idx) { // solo reconstruimos el DOM si cambiamos de línea, para no hacer trabajo innecesario en cada frame
-                                displayActual.innerHTML = ''; // limpia la línea anterior antes de pintar la nueva
+                            const linea = letras[idx];
+                            if (displayActual.dataset.index != idx) {
+                                displayActual.innerHTML = '';
                                 linea.words.forEach((w, i) => {
                                     const s = document.createElement('span');
-                                    s.className = 'palabra'; // la clase CSS que gestiona el gradiente de relleno
+                                    s.className = 'palabra';
                                     s.innerText = w.text + ' ';
-                                    s.id = `w-${i}`; // id único por posición para poder actualizarlo en cada frame sin buscar por texto
+                                    s.id = `w-${i}`;
                                     displayActual.appendChild(s);
                                 });
-                                displayActual.dataset.index = idx; // guarda el índice activo en el dataset para la comprobación del frame siguiente
+                                displayActual.dataset.index = idx;
                                 const sig = letras[idx + 1];
-                                displaySiguiente.innerText = sig ? sig.words.map(w => w.text).join(' ') : ''; // muestra la siguiente línea como texto plano sin efectos de color
+                                displaySiguiente.innerText = sig ? sig.words.map(w => w.text).join(' ') : '';
                             }
                             linea.words.forEach((w, i) => {
                                 const el = document.getElementById(`w-${i}`);
                                 if (!el) return;
                                 if (now >= w.end) {
-                                    el.style.setProperty('--progress', '100%'); // palabra ya cantada: gradiente al 100% (completamente coloreada)
-                                    el.classList.add('pasada'); // clase que la pone gris y semitransparente
+                                    el.style.setProperty('--progress', '100%');
+                                    el.classList.add('pasada');
                                     el.classList.remove('activa');
                                 } else if (now >= w.start) {
-                                    const p = ((now - w.start) / (w.end - w.start)) * 100; // porcentaje de progreso dentro de la duración de esa palabra
-                                    el.style.setProperty('--progress', `${p}%`); // actualiza la variable CSS que controla hasta dónde llega el color del gradiente
-                                    el.classList.add('activa'); // escala la palabra ligeramente para resaltar que se está cantando ahora
+                                    const p = ((now - w.start) / (w.end - w.start)) * 100;
+                                    el.style.setProperty('--progress', `${p}%`);
+                                    el.classList.add('activa');
                                 }
                             });
 
@@ -403,40 +403,40 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             if (ventanaEscenario && !ventanaEscenario.closed) {
                                 const escActual = ventanaEscenario.document.getElementById('linea-actual-esc');
                                 const escSig = ventanaEscenario.document.getElementById('linea-siguiente-esc');
-                                if (escActual) escActual.innerHTML = displayActual.innerHTML; // copia el HTML con los spans ya coloreados a la ventana del escenario
+                                if (escActual) escActual.innerHTML = displayActual.innerHTML;
                                 if (escSig) escSig.innerHTML = displaySiguiente.innerHTML;
                             }
                         }
-                        requestAnimationFrame(engine); // encola el siguiente frame, así el motor corre de forma continua mientras la página está abierta
+                        requestAnimationFrame(engine);
                     }
 
                     // Convierte el texto del archivo .lrc en un array de líneas con tiempo y palabras
                     function parsearLRC(lrc) {
                         const res = [];
-                        const lines = lrc.split('\n'); // cada línea del .lrc es una entrada de tiempo + texto
-                        const lineRegex = /\[(\d+):(\d+\.\d+)\](.*)/; // captura [mm:ss.xx] y el resto del texto de la línea
-                        const wordRegex = /<(\d+):(\d+\.\d+)>/g; // captura cada marca de tiempo de palabra inline tipo <mm:ss.xx>
+                        const lines = lrc.split('\n');
+                        const lineRegex = /\[(\d+):(\d+\.\d+)\](.*)/;
+                        const wordRegex = /<(\d+):(\d+\.\d+)>/g;
 
                         lines.forEach((line) => {
-                            const mL = line.match(lineRegex); // intenta hacer match con el formato de línea LRC estándar
+                            const mL = line.match(lineRegex);
                             if (mL) {
-                                const timeL = parseInt(mL[1]) * 60 + parseFloat(mL[2]); // convierte mm:ss.xx a segundos totales (ej: 1:23.45 → 83.45)
-                                const content = mL[3].trim(); // texto de la línea sin el timestamp inicial, por ejemplo "<0:01.50>Hola <0:02.10>mundo"
-                                const textParts = content.split(/<\d+:\d+\.\d+>/); // parte el texto usando las marcas de tiempo como separadores, dejando solo las palabras
+                                const timeL = parseInt(mL[1]) * 60 + parseFloat(mL[2]);
+                                const content = mL[3].trim();
+                                const textParts = content.split(/<\d+:\d+\.\d+>/);
                                 const innerTimes = [];
                                 let mWT;
                                 while ((mWT = wordRegex.exec(content)) !== null) {
-                                    innerTimes.push(parseInt(mWT[1]) * 60 + parseFloat(mWT[2])); // recoge todos los tiempos de palabra en segundos, en orden de aparición
+                                    innerTimes.push(parseInt(mWT[1]) * 60 + parseFloat(mWT[2]));
                                 }
 
                                 let words = [];
-                                if (textParts[0].trim() !== "") words.push({ start: timeL, text: textParts[0].trim() }); // si hay texto antes de la primera marca inline, su inicio es el tiempo de la línea
+                                if (textParts[0].trim() !== "") words.push({ start: timeL, text: textParts[0].trim() });
                                 for (let i = 0; i < innerTimes.length; i++) {
                                     if (textParts[i + 1] && textParts[i + 1].trim() !== "") {
-                                        words.push({ start: innerTimes[i], text: textParts[i + 1].trim() }); // empareja cada tiempo inline con el fragmento de texto que le sigue
+                                        words.push({ start: innerTimes[i], text: textParts[i + 1].trim() });
                                     }
                                 }
-                                if (words.length > 0) res.push({ time: timeL, words }); // solo añade la línea si tiene al menos una palabra válida
+                                if (words.length > 0) res.push({ time: timeL, words });
                             }
                         });
 
@@ -447,12 +447,12 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
                             for (let j = 0; j < fraseActual.length; j++) {
                                 if (fraseActual[j + 1]) {
-                                    fraseActual[j].end = fraseActual[j + 1].start; // el final de una palabra es el inicio de la siguiente dentro de la misma línea
+                                    fraseActual[j].end = fraseActual[j + 1].start;
                                 } else {
                                     if (proximaFrase) {
-                                        fraseActual[j].end = proximaFrase.time; // la última palabra de la línea termina cuando empieza la línea siguiente
+                                        fraseActual[j].end = proximaFrase.time;
                                     } else {
-                                        fraseActual[j].end = fraseActual[j].start + 2; // si es la última línea de la canción, le doy 2 segundos fijos de duración
+                                        fraseActual[j].end = fraseActual[j].start + 2;
                                     }
                                 }
                             }
@@ -483,7 +483,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
         document.querySelectorAll('.form-añadir').forEach(function(form) {
             form.addEventListener('submit', function(e) {
                 e.preventDefault(); // evita que el formulario recargue la página
-                var titulo = this.closest('.item-cancion').querySelector('h6').innerText; // título de la canción del item de biblioteca
+                var titulo = this.closest('.item-cancion').querySelector('h6').childNodes[0].textContent.trim(); // solo el texto del título, sin el texto del badge del estilo
                 var cantante = this.querySelector('[name=cantante]').value; // nombre escrito en el input "¿Quién canta?"
                 fetch('canciones.php', { method: 'POST', body: new FormData(this) }) // envía los datos al servidor (idCancion + cantante)
                     .then(r => r.text()) // recoge la respuesta: el nuevo id de la fila insertada en la tabla cola
@@ -496,7 +496,7 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                         cola.querySelector('.text-muted')?.remove(); // si la cola estaba vacía, quita el mensaje "Cola vacía"
                         var div = document.createElement('div'); // crea el bloque HTML del nuevo item
                         div.className = 'd-flex justify-content-between align-items-center p-3 mb-2 card-dark item-cola'; // mismas clases que los items existentes
-                        div.innerHTML = `<div class="overflow-hidden"><h6 class="mb-1 fw-bold text-warning text-truncate small">${titulo}</h6><span class="badge bg-secondary opacity-75 mt-1" style="font-size:0.7rem"><i class="bi bi-person-fill me-1"></i>${cantante}</span></div><div class="d-flex align-items-center gap-2"><form method="POST" class="form-mover"><input type="hidden" name="idCola" value="${id.trim()}"><input type="hidden" name="mover" value="subir"><button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-up-fill"></i></button></form><form method="POST" class="form-mover"><input type="hidden" name="idCola" value="${id.trim()}"><input type="hidden" name="mover" value="bajar"><button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-down-fill"></i></button></form><form method="POST" class="form-quitar"><input type="hidden" name="idCola" value="${id.trim()}"><button type="submit" class="btn btn-link text-danger p-0"><i class="bi bi-trash"></i></button></form></div>`; // rellena el item con título, cantante y botones de subir/bajar/quitar
+                        div.innerHTML = `<div class="overflow-hidden"><h6 class="mb-1 fw-bold text-warning text-truncate small" style="color:#ffc107">${titulo}</h6><span class="badge bg-secondary opacity-75 mt-1" style="font-size:0.7rem"><i class="bi bi-person-fill me-1"></i>${cantante}</span></div><div class="d-flex align-items-center gap-2"><form method="POST" class="form-mover"><input type="hidden" name="idCola" value="${id.trim()}"><input type="hidden" name="mover" value="subir"><button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-up-fill"></i></button></form><form method="POST" class="form-mover"><input type="hidden" name="idCola" value="${id.trim()}"><input type="hidden" name="mover" value="bajar"><button type="submit" class="btn btn-link text-secondary p-0"><i class="bi bi-caret-down-fill"></i></button></form><form method="POST" class="form-quitar"><input type="hidden" name="idCola" value="${id.trim()}"><button type="submit" class="btn btn-link text-danger p-0"><i class="bi bi-trash"></i></button></form></div>`; // rellena el item con título, cantante y botones de subir/bajar/quitar
                         div.querySelectorAll('.form-quitar').forEach(f => f.addEventListener('submit', function(e2) { e2.preventDefault(); this.closest('.item-cola').remove(); fetch('canciones.php', { method: 'POST', body: new FormData(this) }); })); // adjunta el evento de borrar al botón quitar del nuevo item
                         div.querySelectorAll('.form-mover').forEach(f => f.addEventListener('submit', function(e2) { e2.preventDefault(); var item = this.closest('.item-cola'), dir = this.querySelector('[name=mover]').value, sib = dir === 'subir' ? item.previousElementSibling : item.nextElementSibling; if (sib) dir === 'subir' ? item.parentNode.insertBefore(item, sib) : item.parentNode.insertBefore(sib, item); fetch('canciones.php', { method: 'POST', body: new FormData(this) }); })); // adjunta el evento de mover a los botones subir/bajar del nuevo item
                         cola.appendChild(div); // inserta el nuevo item al final de la cola
