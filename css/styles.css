@@ -32,8 +32,8 @@ body {
 
 /* ---------- FORMULARIOS ---------- */
 
-/* Todos los campos del formulario en tema oscuro.
-   El blanco de Bootstrap por defecto queda fatal con el fondo negro */
+/* Se ponen todos los campos del formulario en tema oscuro.
+El blanco de Bootstrap por defecto queda fatal con el fondo negro */
 .form-label {
   color: #ffffff;
 }
