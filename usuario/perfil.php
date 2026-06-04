@@ -1,15 +1,9 @@
 <?php
 session_start();
 include '../includes/conexion.php';
+include 'seguridad_usuario.php';
 
 /** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
-
-
-// Verificación de seguridad básica
-if (!isset($_SESSION['idUsuario'])) {
-    header("Location: ../index.php");
-    exit();
-}
 
 $idUsuario = $_SESSION['idUsuario'];
 $mensaje = "";

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include("../includes/conexion.php");
+include 'seguridad_usuario.php';
 
 /** @var mysqli $conn */ // Para que el IDE reconozca $conn como una conexión mysqli y nos ofrezca autocompletado
 
