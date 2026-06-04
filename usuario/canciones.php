@@ -367,35 +367,35 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
                     // Motor de karaoke: se ejecuta en cada frame, colorea las palabras según el tiempo del audio
                     function engine() {
-                        const now = audioGuia.currentTime;
-                        const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i + 1] || now < letras[i + 1].time));
+                        const now = audioGuia.currentTime; // tiempo actual del audio en segundos
+                        const idx = letras.findIndex((l, i) => now >= l.time && (!letras[i + 1] || now < letras[i + 1].time)); // línea activa: la última cuyo tiempo de inicio ya pasó y cuya siguiente aún no ha llegado
 
                         if (idx !== -1) {
-                            const linea = letras[idx];
-                            if (displayActual.dataset.index != idx) {
-                                displayActual.innerHTML = '';
+                            const linea = letras[idx]; // objeto de la línea activa con su array de palabras
+                            if (displayActual.dataset.index != idx) { // solo reconstruimos el DOM si cambiamos de línea, para no hacer trabajo innecesario en cada frame
+                                displayActual.innerHTML = ''; // limpia la línea anterior antes de pintar la nueva
                                 linea.words.forEach((w, i) => {
                                     const s = document.createElement('span');
-                                    s.className = 'palabra';
+                                    s.className = 'palabra'; // la clase CSS que gestiona el gradiente de relleno
                                     s.innerText = w.text + ' ';
-                                    s.id = `w-${i}`;
+                                    s.id = `w-${i}`; // id único por posición para poder actualizarlo en cada frame sin buscar por texto
                                     displayActual.appendChild(s);
                                 });
-                                displayActual.dataset.index = idx;
+                                displayActual.dataset.index = idx; // guarda el índice activo en el dataset para la comprobación del frame siguiente
                                 const sig = letras[idx + 1];
-                                displaySiguiente.innerText = sig ? sig.words.map(w => w.text).join(' ') : '';
+                                displaySiguiente.innerText = sig ? sig.words.map(w => w.text).join(' ') : ''; // muestra la siguiente línea como texto plano sin efectos de color
                             }
                             linea.words.forEach((w, i) => {
                                 const el = document.getElementById(`w-${i}`);
                                 if (!el) return;
                                 if (now >= w.end) {
-                                    el.style.setProperty('--progress', '100%');
-                                    el.classList.add('pasada');
+                                    el.style.setProperty('--progress', '100%'); // palabra ya cantada: gradiente al 100% (completamente coloreada)
+                                    el.classList.add('pasada'); // clase que la pone gris y semitransparente
                                     el.classList.remove('activa');
                                 } else if (now >= w.start) {
-                                    const p = ((now - w.start) / (w.end - w.start)) * 100;
-                                    el.style.setProperty('--progress', `${p}%`);
-                                    el.classList.add('activa');
+                                    const p = ((now - w.start) / (w.end - w.start)) * 100; // porcentaje de progreso dentro de la duración de esa palabra
+                                    el.style.setProperty('--progress', `${p}%`); // actualiza la variable CSS que controla hasta dónde llega el color del gradiente
+                                    el.classList.add('activa'); // escala la palabra ligeramente para resaltar que se está cantando ahora
                                 }
                             });
 
@@ -403,40 +403,40 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
                             if (ventanaEscenario && !ventanaEscenario.closed) {
                                 const escActual = ventanaEscenario.document.getElementById('linea-actual-esc');
                                 const escSig = ventanaEscenario.document.getElementById('linea-siguiente-esc');
-                                if (escActual) escActual.innerHTML = displayActual.innerHTML;
+                                if (escActual) escActual.innerHTML = displayActual.innerHTML; // copia el HTML con los spans ya coloreados a la ventana del escenario
                                 if (escSig) escSig.innerHTML = displaySiguiente.innerHTML;
                             }
                         }
-                        requestAnimationFrame(engine);
+                        requestAnimationFrame(engine); // encola el siguiente frame, así el motor corre de forma continua mientras la página está abierta
                     }
 
                     // Convierte el texto del archivo .lrc en un array de líneas con tiempo y palabras
                     function parsearLRC(lrc) {
                         const res = [];
-                        const lines = lrc.split('\n');
-                        const lineRegex = /\[(\d+):(\d+\.\d+)\](.*)/;
-                        const wordRegex = /<(\d+):(\d+\.\d+)>/g;
+                        const lines = lrc.split('\n'); // cada línea del .lrc es una entrada de tiempo + texto
+                        const lineRegex = /\[(\d+):(\d+\.\d+)\](.*)/; // captura [mm:ss.xx] y el resto del texto de la línea
+                        const wordRegex = /<(\d+):(\d+\.\d+)>/g; // captura cada marca de tiempo de palabra inline tipo <mm:ss.xx>
 
                         lines.forEach((line) => {
-                            const mL = line.match(lineRegex);
+                            const mL = line.match(lineRegex); // intenta hacer match con el formato de línea LRC estándar
                             if (mL) {
-                                const timeL = parseInt(mL[1]) * 60 + parseFloat(mL[2]);
-                                const content = mL[3].trim();
-                                const textParts = content.split(/<\d+:\d+\.\d+>/);
+                                const timeL = parseInt(mL[1]) * 60 + parseFloat(mL[2]); // convierte mm:ss.xx a segundos totales (ej: 1:23.45 → 83.45)
+                                const content = mL[3].trim(); // texto de la línea sin el timestamp inicial, por ejemplo "<0:01.50>Hola <0:02.10>mundo"
+                                const textParts = content.split(/<\d+:\d+\.\d+>/); // parte el texto usando las marcas de tiempo como separadores, dejando solo las palabras
                                 const innerTimes = [];
                                 let mWT;
                                 while ((mWT = wordRegex.exec(content)) !== null) {
-                                    innerTimes.push(parseInt(mWT[1]) * 60 + parseFloat(mWT[2]));
+                                    innerTimes.push(parseInt(mWT[1]) * 60 + parseFloat(mWT[2])); // recoge todos los tiempos de palabra en segundos, en orden de aparición
                                 }
 
                                 let words = [];
-                                if (textParts[0].trim() !== "") words.push({ start: timeL, text: textParts[0].trim() });
+                                if (textParts[0].trim() !== "") words.push({ start: timeL, text: textParts[0].trim() }); // si hay texto antes de la primera marca inline, su inicio es el tiempo de la línea
                                 for (let i = 0; i < innerTimes.length; i++) {
                                     if (textParts[i + 1] && textParts[i + 1].trim() !== "") {
-                                        words.push({ start: innerTimes[i], text: textParts[i + 1].trim() });
+                                        words.push({ start: innerTimes[i], text: textParts[i + 1].trim() }); // empareja cada tiempo inline con el fragmento de texto que le sigue
                                     }
                                 }
-                                if (words.length > 0) res.push({ time: timeL, words });
+                                if (words.length > 0) res.push({ time: timeL, words }); // solo añade la línea si tiene al menos una palabra válida
                             }
                         });
 
@@ -447,12 +447,12 @@ $resultado_canciones = mysqli_query($conn, "SELECT * FROM canciones");
 
                             for (let j = 0; j < fraseActual.length; j++) {
                                 if (fraseActual[j + 1]) {
-                                    fraseActual[j].end = fraseActual[j + 1].start;
+                                    fraseActual[j].end = fraseActual[j + 1].start; // el final de una palabra es el inicio de la siguiente dentro de la misma línea
                                 } else {
                                     if (proximaFrase) {
-                                        fraseActual[j].end = proximaFrase.time;
+                                        fraseActual[j].end = proximaFrase.time; // la última palabra de la línea termina cuando empieza la línea siguiente
                                     } else {
-                                        fraseActual[j].end = fraseActual[j].start + 2;
+                                        fraseActual[j].end = fraseActual[j].start + 2; // si es la última línea de la canción, le doy 2 segundos fijos de duración
                                     }
                                 }
                             }

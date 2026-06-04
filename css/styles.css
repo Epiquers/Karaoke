@@ -1,5 +1,13 @@
+/* ============================================================
+   styles.css — Hoja de estilos principal del proyecto Kantabile
+   Tema oscuro general con acento en rojo (#dc3545).
+   Empecé con Bootstrap como base y fui sobreescribiendo lo que
+   no me convencía para mantener la coherencia visual.
+   ============================================================ */
+
 /* ---------- ESTILOS GENERALES ---------- */
 
+/* Fondo oscuro fijo para que no haya saltos de color al hacer scroll */
 body {
     background-color: #1a1a1a;
     background-attachment: fixed;
@@ -10,6 +18,8 @@ body {
 
 /* ---------- TARJETAS ---------- */
 
+/* Tarjeta oscura personalizada, la uso en lugar de .card de Bootstrap
+   para no tener que estar sobreescribiendo el fondo blanco en cada sitio */
 .card-dark {
   background-color: #1e1e1e;
   border: none;
@@ -22,6 +32,8 @@ body {
 
 /* ---------- FORMULARIOS ---------- */
 
+/* Todos los campos del formulario en tema oscuro.
+   El blanco de Bootstrap por defecto queda fatal con el fondo negro */
 .form-label {
   color: #ffffff;
 }
@@ -32,6 +44,9 @@ body {
   color: #ffffff;
 }
 
+/* Los <select> son problemáticos: el navegador ignora
+   casi todo el CSS que les meto y los pinta a su manera.
+   Con !important en cada propiedad consigo que se vean oscuros */
 /* Tema oscuro en select */
 .form-select {
   background-color: #2a2a2a !important;
@@ -41,6 +56,8 @@ body {
   background-image: none !important;
 }
 
+/* En el panel admin lo repito con color-scheme: dark porque algunos
+   navegadores (sobre todo Chrome) seguían mostrando el fondo blanco */
 /* Forzar tema oscuro en select del panel admin */
 .admin-form-panel .form-select {
   background-color: #2a2a2a !important;
@@ -54,6 +71,8 @@ body {
   color: #80848d !important;
 }
 
+/* Al enfocar cualquier input quiero que aparezca un borde rojo
+   y que desaparezca el halo azul que pone Bootstrap por defecto */
 /* Efecto de foco con borde rojo y fondo oscuro */
 .form-control:focus {
   background-color: #2a2a2a;
@@ -82,6 +101,9 @@ body {
 
 /* ---------- BOTONES ---------- */
 
+/* Botón principal de la app, siempre en rojo.
+   El color: white !important es necesario porque Bootstrap
+   lo sobreescribe en algunos estados */
 .btn-main {
   background-color: #dc3545;
   border: none;
@@ -96,6 +118,8 @@ body {
 
 /* ---------- LINKS ---------- */
 
+/* Los enlaces en rojo por defecto y en blanco al pasar el ratón.
+   Combina bien con el fondo oscuro y sigue la paleta de la app */
 a {
   color: #dc3545;
 }
@@ -105,8 +129,12 @@ a:hover {
   text-decoration: none;
 }
 
-/* Tus estilos originales se mantienen igual */
 /* ---------- ESTRUCTURA DE PANELES PARA ADMIN ---------- */
+
+/* El panel de administración tiene un layout de dos columnas:
+   izquierda para el formulario de inserción y derecha para la lista.
+   Uso flexbox para que los dos paneles ocupen exactamente el alto
+   de la pantalla sin que la página entera haga scroll */
 .app-container {
     height: 100vh;
     display: flex;
@@ -132,7 +160,9 @@ a:hover {
     background: rgba(0,0,0,0.1);
 }
 
-/* Ajuste para que las tablas peguen con tu estilo rojo */
+/* Cabecera de tabla en rojo y mayúsculas para que destaque bien
+   dentro del panel oscuro y sea fácil de leer de un vistazo */
+/* Ajuste para que las tablas peguen con el estilo rojo */
 .table thead th {
     border-bottom: 2px solid #dc3545 !important;
     color: #dc3545 !important;
@@ -169,7 +199,8 @@ a:hover {
             background-color: #dc3545 !important;
         }
 
-        /* Estilo para el buscador */
+        /* Buscador fijo en la parte superior de la lista de canciones,
+           con fondo ligeramente distinto para que se diferencie del contenido */
         .search-container {
             background: #151515;
             padding: 10px;
@@ -195,6 +226,10 @@ a:hover {
         }
 
 /* ---------- RESPONSIVE: ADMIN ---------- */
+
+/* En móvil y tablet el layout de dos columnas no cabe,
+   así que apilo los paneles verticalmente y dejo que
+   la página haga scroll normal en lugar de fixed-height */
 @media (max-width: 991.98px) {
     .app-container {
         height: auto !important;
@@ -223,6 +258,8 @@ a:hover {
 
 /* ---------- PÁGINA CANCIONES (USUARIO) ---------- */
 
+/* La página de canciones del usuario tiene fondo negro puro
+   para que el reproductor de karaoke destaque más */
 .page-canciones {
     background: #000 !important;
 }
@@ -235,6 +272,9 @@ a:hover {
 
 /* --- KARAOKE / REPRODUCTOR --- */
 
+/* Pantalla principal del karaoke: gradiente radial oscuro para
+   simular el efecto de escenario iluminado desde el centro.
+   overflow: hidden para que los efectos de fondo no se salgan del borde */
 #pantalla-karaoke {
     background: radial-gradient(circle, #212121 25%, #000 100%);
     min-height: 500px;
@@ -251,6 +291,8 @@ a:hover {
     transition: all 0.5s ease;
 }
 
+/* Cada línea tiene altura mínima fija para que el layout no salte
+   cuando cambia de una línea corta a una larga */
 .linea-karaoke {
     min-height: 6rem;
     margin: 10px 0;
@@ -260,12 +302,16 @@ a:hover {
     z-index: 10;
 }
 
+/* Línea actual en grande con clamp() para que escale bien
+   en cualquier tamaño de pantalla sin romper el layout */
 #linea-actual {
     font-size: clamp(1.4rem, 6vw, 3.5rem);
     font-weight: 900;
     text-transform: uppercase;
 }
 
+/* Siguiente línea más pequeña, desenfocada y semitransparente
+   para que el cantante la vea pero no distraiga de la actual */
 #linea-siguiente {
     font-size: clamp(0.85rem, 3vw, 1.8rem);
     opacity: 0.3;
@@ -274,6 +320,10 @@ a:hover {
     filter: blur(1px);
 }
 
+/* Cada palabra de la letra se rellena de color amarillo-verde
+   usando un gradiente con --progress como variable CSS dinámica.
+   Desde JS actualizo esa variable para simular el efecto de karaoke
+   clásico (la palabra se va iluminando según avanza el tiempo) */
 .palabra {
     display: inline-block;
     margin: 0 20px;
@@ -293,6 +343,9 @@ a:hover {
     opacity: 0.5;
 }
 
+/* Pantalla de cuenta atrás antes de empezar la canción */
+
+
 #karaoke-intro {
     transition: opacity 0.5s ease;
     background: rgba(0, 0, 0, 0.95) !important;
@@ -305,6 +358,9 @@ a:hover {
 
 /* --- CONTROLES DEL REPRODUCTOR --- */
 
+/* El elemento <audio> nativo lo estilizo lo justo para que encaje
+   con el tema oscuro, aunque el control interno del navegador
+   sigue siendo difícil de personalizar a fondo */
 audio#videoKaraoke {
     color-scheme: dark;
     border-radius: 50px;
@@ -317,6 +373,8 @@ audio#videoKaraoke::-webkit-media-controls-panel {
     background: #151515 !important;
 }
 
+/* Barra de controles personalizada con bordes redondeados
+   para darle un aspecto de pastilla, más moderno que un rectángulo */
 .controles-player {
     background: #151515;
     border: 1px solid #333;
@@ -331,6 +389,8 @@ audio#videoKaraoke::-webkit-media-controls-panel {
     padding: 6px 16px;
 }
 
+/* Botón de voz: transparente en reposo, se rellena de rojo al activarse.
+   Sirve para alternar entre pista con voz y pista instrumental */
 .btn-player-voz {
     background: transparent !important;
     border: 1px solid #dc3545 !important;
@@ -369,10 +429,12 @@ audio#videoKaraoke::-webkit-media-controls-panel {
     color: #fff !important;
 }
 
+/* Animación de entrada para la pantalla de intro antes del karaoke */
 .animate-intro {
     animation: zoomIn 0.6s ease-out;
 }
 
+/* Zoom desde la mitad del tamaño hasta el tamaño real con fade-in */
 @keyframes zoomIn {
     from {
         transform: scale(0.5);
@@ -391,6 +453,10 @@ audio#videoKaraoke::-webkit-media-controls-panel {
     text-transform: uppercase;
 }
 
+/* En móvil reduzco el tamaño de fuente del karaoke porque si no
+   las letras largas desbordan la pantalla y queda muy mal.
+   También oculto el botón de abrir escenario porque en móvil
+   no tiene sentido la vista de pantalla completa */
 @media (max-width: 767.98px) {
     #linea-actual {
         font-size: 1.8rem !important;
